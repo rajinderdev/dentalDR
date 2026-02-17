@@ -13,14 +13,14 @@ class AuthService
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            if (!auth()->user()->is_admin) {
-                Auth::logout();
+            // if (!auth()->user()->is_admin) {
+            //     Auth::logout();
 
-                return [
-                    'success' => false,
-                    'error' => 'You do not have admin access.',
-                ];
-            }
+            //     return [
+            //         'success' => false,
+            //         'error' => 'You do not have admin access.',
+            //     ];
+            // }
 
             return ['success' => true, 'error' => null];
         }

@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>DentalDR - Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="flex min-h-screen">
@@ -13,7 +14,7 @@
         @include('partials.sidebar')
 
         {{-- Main Content --}}
-        <div class="flex-1 ml-56">
+        <div class="flex-1 ml-16">
             {{-- Header --}}
             @include('partials.header')
 

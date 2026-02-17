@@ -1,0 +1,34 @@
+Create new table in database name is below:
+
+1. 	TreatmentLabWork
+2.  events
+3.  AppointmentRescheduled
+4.  designations
+5.  buildings
+6.  patient_package_usage
+7.  patient_package
+8.  packages
+9.  package_services
+9.  habits
+10. patient_habits
+11. patient_medical_insurance
+12. patient_relations
+13. digital_signatures
+
+
+
+Add Column in table name is below:
+
+1. column name = WaitingAreaFlag in table name = PatientTreatmentsDone
+1. column name = IsCompleted in table name = PatientTreatmentsDone
+1. column name = CompletionTime in table name = PatientTreatmentsDone
+2. column name = DentalHistoryDate in table name = DentalHistoryAttributeText
+3. column name = AllergyDate in table name = AllergyAttributeText
+4. column name = MarriageAnniversary in table name = Patient
+5. column name = Designation in table name = Patient
+6. column name = Notify in table name = Patient
+7. column name = Building in table name = Patient
+8. column name = Building_id in table name = Patient
+9. column name = VIP in table name = Patient
+9. column name = doctorincentive_percentage in table name = TreatmentTypeHierarchy
+9. column name = CabineNumber in table name = Provider

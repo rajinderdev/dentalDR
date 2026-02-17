@@ -1,50 +1,117 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
+
+/**
+ * Class User
+ * 
+ * @property string $UserID
+ * @property string|null $RoleID
+ * @property string|null $ClientID
+ * @property string|null $UserName
+ * @property string|null $Password
+ * @property string|null $Email
+ * @property string|null $Name
+ * @property bool|null $IsDeleted
+ * @property Carbon|null $CreatedOn
+ * @property string|null $CreatedBy
+ * @property Carbon|null $LastUpdatedOn
+ * @property string|null $LastUpdatedBy
+ * @property string|null $Mobile
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_admin',
-    ];
+	protected $table = 'Users';
+	protected $primaryKey = 'UserID';
+	public $incrementing = false; // Disable auto-incrementing
+	protected $keyType = 'string'; // Set key type to string (UUID)
+	public $timestamps = false; // Disable Laravel's default timestamps
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	protected $casts = [
+		'IsDeleted' => 'bool',
+		'CreatedOn' => 'datetime',
+		'LastUpdatedOn' => 'datetime'
+	];
+	protected $appends = ['RoleName'];
+	protected $fillable = [
+		'RoleID',
+		'ClientID',
+		'UserName',
+		'Password',
+		'Email',
+		'Name',
+		'IsDeleted',
+		'CreatedOn',
+		'CreatedBy',
+		'LastUpdatedOn',
+		'LastUpdatedBy',
+		'Mobile'
+	];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_admin' => 'boolean',
-        ];
-    }
+	/**
+	 * The attributes that should be hidden for serialization.
+	 *
+	 * @var array<int, string>
+	 */
+	protected $hidden = [
+		'Password',
+		'CreatedOn',
+		'CreatedBy',
+		'LastUpdatedOn',
+		'LastUpdatedBy',
+	];
+
+	protected static function boot()
+	{
+		parent::boot();
+		static::creating(function ($model) {
+			if (empty($model->UserID)) {
+				$model->UserID = (string) Str::uuid(); // Auto-generate UUID
+			}
+		});
+	}
+
+	/**
+	 * Get the attributes that should be cast.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function casts(): array
+	{
+		return [
+			'Password' => 'hashed',
+		];
+	}
+
+	public function getAuthPassword()
+	{
+		return $this->Password;
+	}
+
+	public function role()
+	{
+		return $this->belongsTo(AspnetRole::class, 'RoleID', 'RoleId');
+	}
+
+	public function getRoleNameAttribute()
+	{
+		return $this->role ? $this->role->RoleName : null;
+	}
 }

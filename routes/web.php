@@ -41,6 +41,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/users', [App\Http\Controllers\ManageUserController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users/{id}/edit', [App\Http\Controllers\ManageUserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{id}', [App\Http\Controllers\ManageUserController::class, 'update'])->name('admin.users.update');
+    Route::post('/admin/users/change-password', [App\Http\Controllers\ManageUserController::class, 'changePassword'])->name('admin.users.change-password');
     Route::delete('/admin/users/{id}', [App\Http\Controllers\ManageUserController::class, 'destroy'])->name('admin.users.destroy');
     Route::post('/admin/users/{id}/toggle-lock', [App\Http\Controllers\ManageUserController::class, 'toggleLock'])->name('admin.users.toggle-lock');
     Route::post('/admin/users/{id}/toggle-approval', [App\Http\Controllers\ManageUserController::class, 'toggleApproval'])->name('admin.users.toggle-approval');

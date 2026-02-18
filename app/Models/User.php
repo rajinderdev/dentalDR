@@ -62,7 +62,11 @@ class User extends Authenticatable
 		'CreatedBy',
 		'LastUpdatedOn',
 		'LastUpdatedBy',
-		'Mobile'
+		'Mobile',
+		'Approved',
+		'Locked',
+		'SecurityQuestion',
+		'SecurityAnswer'
 	];
 
 	/**

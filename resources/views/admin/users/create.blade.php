@@ -1,91 +1,86 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-sm p-6">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Create Account</h1>
+<div class="bg-white rounded-lg shadow-sm p-4 md:p-6">
     
-    <form id="createUserForm" class="space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-3 md:px-4 py-2 mb-4 md:mb-6 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm md:text-base">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Users
+    </a>
+    <h1 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Create Account</h1>
+    <form id="createUserForm" class="space-y-4 md:space-y-6">
+         @csrf
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             {{-- Left Column --}}
-            <div class="space-y-4">
+            <div class="space-y-3 md:space-y-4">
                 {{-- Login ID --}}
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name<sup class="star">*</sup></label>
                     <input 
                         type="text" 
                         id="name" 
                         name="name"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter login ID"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        placeholder="Enter Name"
                         required
                     >
                 </div>
 
                 {{-- Password --}}
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password<sup class="star">*</sup></label>
                     <input 
                         type="password" 
                         id="password" 
                         name="password"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         placeholder="Enter password"
                         minlength="6"
                         required
-                    >
-                    <p class="text-xs text-gray-500 mt-1">Min. 6 Characters</p>
+                    > 
+                </div>
+                
+                {{-- Confirm Password --}}
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password<sup class="star">*</sup></label>
+                    <input 
+                        type="password" 
+                        id="password_confirmation" 
+                        name="password_confirmation"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        placeholder="Confirm password"
+                        minlength="6"
+                        required
+                    > 
                 </div>
 
                 {{-- Email --}}
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email<sup class="star">*</sup></label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         placeholder="Enter email address"
                         required
                     >
                 </div>
 
-                {{-- Security Answer --}}
-                <div>
-                    <label for="security_answer" class="block text-sm font-medium text-gray-700 mb-2">Security Answer</label>
-                    <input 
-                        type="text" 
-                        id="security_answer" 
-                        name="security_answer"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter security answer"
-                        required
-                    >
-                </div>
+                
             </div>
 
             {{-- Right Column --}}
-            <div class="space-y-4">
-                {{-- Confirm Password --}}
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        id="password_confirmation" 
-                        name="password_confirmation"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Confirm password"
-                        minlength="6"
-                        required
-                    >
-                </div>
-
+            <div class="space-y-3 md:space-y-4">
                 {{-- Security Question --}}
                 <div>
-                    <label for="security_question" class="block text-sm font-medium text-gray-700 mb-2">Security Question</label>
+                    <label for="security_question" class="block text-sm font-medium text-gray-700 mb-2">Security Question<sup class="star">*</sup></label>
                     <select 
                         id="security_question" 
                         name="security_question"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         required
                     >
                         <option value="">Select a security question</option>
@@ -96,15 +91,26 @@
                         <option value="first_car">What was your first car?</option>
                     </select>
                 </div>
-
+                {{-- Security Answer --}}
+                <div>
+                    <label for="security_answer" class="block text-sm font-medium text-gray-700 mb-2">Security Answer<sup class="star">*</sup></label>
+                    <input 
+                        type="text" 
+                        id="security_answer" 
+                        name="security_answer"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        placeholder="Enter security answer"
+                        required
+                    >
+                </div>
 
                 {{-- Role Selection --}}
                 <div>
-                    <label for="RoleID" class="block text-sm font-medium text-gray-700 mb-2"> User Type</label>
+                    <label for="RoleID" class="block text-sm font-medium text-gray-700 mb-2"> User Type<sup class="star">*</sup></label>
                     <select 
                         id="RoleID" 
                         name="RoleID"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         required
                     >
                         <option value="">Select user type</option>
@@ -117,70 +123,126 @@
         </div>
 
         {{-- Action Buttons --}}
-        <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 md:pt-6 border-t border-gray-200">
             <button 
                 type="button" 
                 onclick="window.history.back()"
-                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm order-2 sm:order-1"
             >
                 Cancel
             </button>
             <button 
                 type="submit" 
-                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm order-1 sm:order-2"
             >
                 Create Account
             </button>
         </div>
     </form>
 </div>
+@endsection
+@section('page_js')
+
 
 <script>
-document.getElementById('createUserForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+$(document).ready(function() {
+    // Add custom CSS for validation errors
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            .error {
+                color: #dc3545 !important;
+                font-size: 0.875rem !important;
+                margin-top: 0.25rem !important;
+                display: block !important;
+            }
+            input.error, select.error {
+                border-color: #dc3545 !important;
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+            }
+        `)
+        .appendTo('head');
     
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    // Basic validation
-    if (data.password !== data.password_confirmation) {
-        alert('Passwords do not match!');
-        return;
-    }
-    
-    if (data.password.length < 6) {
-        alert('Password must be at least 6 characters long!');
-        return;
-    }
-    
-    if (!data.email) {
-        alert('Email is required!');
-        return;
-    }
-    
-    // Submit via AJAX
-    fetch('{{ route('admin.users.store') }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
+    // Initialize form validation
+    $("#createUserForm").validate({
+        ignore: [],
+        rules: {
+            name: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 6
+            },
+            password_confirmation: {
+                required: true,
+                equalTo: "#password"
+            },
+            RoleID: {
+                required: true
+            },
+            security_question: {
+                required: true
+            },
+            security_answer: {
+                required: true
+            }
         },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('Success!', data.message, 'success');
-            window.location.href = '{{ route('admin.users.index') }}';
-        } else {
-            showNotification('Error!', data.message, 'error');
+        messages: {
+            name: {
+                required: "Please enter name"
+            },
+            email: {
+                required: "Please enter email",
+                email: "Please enter a valid email"
+            },
+            password: {
+                required: "Please enter password",
+                minlength: "Password must be at least 6 characters"
+            },
+            password_confirmation: {
+                required: "Please confirm password",
+                equalTo: "Passwords do not match"
+            },
+            RoleID: {
+                required: "Please select user type"
+            },
+            security_question: {
+                required: "Please select security question"
+            },
+            security_answer: {
+                required: "Please enter security answer"
+            }
+        },
+        submitHandler: function(form) {
+            // Form submission will be handled by the existing AJAX code
+            return false; // Prevent default submission to let AJAX handle it
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error!', 'An error occurred while creating user.', 'error');
     });
+});
+$('#createUserForm').on('submit', function(e) {
+    e.preventDefault();
+    if ($(this).valid()) {
+        $.ajax({
+            url: "{{ route('admin.users.store') }}",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (res) {
+                showNotification('Success!', 'User created successfully', 'success');
+                window.location.href = "{{ route('admin.users.index') }}";
+            },
+            error: function(xhr, status, error) {
+                showNotification('Error!', 'An error occurred while creating user.', 'error');
+            }
+        });
+    }
 });
 function showNotification(title, message, type) {
     // Create notification element

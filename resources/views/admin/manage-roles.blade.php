@@ -6,6 +6,7 @@
     
     <form id="rolePermissionsForm">
         @csrf
+        @method('PUT')
         <div class="overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>
@@ -25,7 +26,7 @@
                                 {{ $role->name }}
                             </td>
                             <td class="px-4 py-3">
-                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                <div class="grid grid-cols-2 gap-3">
                                     @foreach($modules as $module)
                                         <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded">
                                             <input 

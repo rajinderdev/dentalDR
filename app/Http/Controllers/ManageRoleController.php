@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\LicenseModules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
 class ManageRoleController extends Controller
 {
     public function index()
@@ -24,7 +24,6 @@ class ManageRoleController extends Controller
             $permissions = $role->permissions->pluck('name')->toArray();
             $rolePermissions[$role->name] = $permissions;
         }
-        
         return view('admin.manage-roles', compact('roles', 'modules', 'rolePermissions'));
     }
     
@@ -39,7 +38,12 @@ class ManageRoleController extends Controller
         try {
             DB::beginTransaction();
             
+            // Debug: Log the incoming request data
+            Log::info('Role permissions update request:', $request->all());
+            
             foreach ($request->role_permissions as $roleName => $permissions) {
+                Log::info("Processing role: $roleName with permissions: " . implode(', ', $permissions));
+                
                 $role = Role::where('name', $roleName)->first();
                 
                 if ($role) {
@@ -48,8 +52,34 @@ class ManageRoleController extends Controller
                     
                     // Add new permissions
                     if (!empty($permissions)) {
-                        $role->givePermissionTo($permissions);
+                        // Map module codes to permission names
+                        $mappedPermissions = array_map(function($permission) {
+                            $mapping = [
+                                'TVP' => 'TVPLUS',
+                                'UTI' => 'UTILITIES',
+                                'LRS' => 'REPORTS_ANALYSIS', 
+                                'RTS' => 'REPORTS_TX',
+                                'ADS' => 'ADMIN',
+                                'ACT' => 'APPOINTMENT',
+                                'EXS' => 'EXPENSE',
+                                'EIS' => 'EMAIL',
+                                'APS' => 'APPOINTMENT',
+                                'RAS' => 'REPORTS_ANALYSIS',
+                                'BKP' => 'BACKUP',
+                                'IVS' => 'INVENTORY',
+                                'BAM' => 'BANK',
+                                'EPR' => 'PRMS'
+                            ];
+                            
+                            return $mapping[$permission] ?? $permission;
+                        }, $permissions);
+                        
+                    Log::info("Mapped permissions for $roleName: " . implode(', ', $mappedPermissions));
+                        
+                        $role->givePermissionTo($mappedPermissions);
                     }
+                } else {
+                    Log::warning("Role not found: $roleName");
                 }
             }
             
@@ -62,6 +92,9 @@ class ManageRoleController extends Controller
             
         } catch (\Exception $e) {
             DB::rollback();
+            
+            Log::error('Error updating role permissions: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             
             return response()->json([
                 'success' => false,

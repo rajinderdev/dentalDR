@@ -87,7 +87,7 @@
 
                     <div class="hidden group-hover:block ml-9 space-y-1 pt-1">
                         <a href="{{ route('admin.roles.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.roles.*') ? 'bg-blue-700' : '' }}">Manage Roles</a>
-                        <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Add User</a>
+                        <a href="{{ route('admin.users.create') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Add User</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage User</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Doctors</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Clinic</a>

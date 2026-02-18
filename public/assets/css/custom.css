@@ -1,0 +1,159 @@
+.dataTables_filter input[type="search"] {
+    border: solid 1px #eee;
+    height: 35px;
+    padding: 4px 10px;
+}
+table tbody tr td.sorting_1::before {
+    position: relative !important;
+    display: inline-block !important;
+    margin-right: 12px !important;
+    top: 0px !important;
+}
+
+/*table-css*/
+table.dataTable.no-footer {
+    border-bottom: 1px solid #ddd;
+}
+
+table.dataTable tbody td {
+    padding: 10px 4px !important;
+}
+
+table.dataTable thead th {
+    padding: 14px 4px !important;
+}
+
+table.dataTable tbody td,
+table.dataTable thead th {
+    border-bottom: 1px solid #ddd;
+}
+
+table.dataTable thead th {
+    background-color: #f3f4f9;
+}
+
+table.dataTable.display tbody tr.odd>.sorting_1,
+table.dataTable.order-column.stripe tbody tr.odd>.sorting_1 {
+    background-color: transparent;
+}
+
+table.dataTable.display tbody tr.even>.sorting_1,
+table.dataTable.order-column.stripe tbody tr.even>.sorting_1 {
+    background-color: transparent;
+}
+
+table.dataTable.stripe tbody tr.odd,
+table.dataTable.display tbody tr.odd {
+    background-color: transparent;
+}
+
+table.dataTable.hover tbody tr:hover,
+table.dataTable.display tbody tr:hover {
+    background-color: transparent;
+}
+
+table.dataTable.display tbody tr:hover>.sorting_1,
+table.dataTable.order-column.hover tbody tr:hover>.sorting_1 {
+    background-color: transparent;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: -webkit-linear-gradient(#e21c21, #e21c21);
+    color: #fff !important;
+    border-color: #e21c21;
+}
+
+.btn-preview {
+    padding: 6px 10px;
+    border-radius: 8px;
+    display: inline-block;
+    color: #fff;
+    border: none;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    padding-top: 0.755em;
+}
+
+.form-check-input:checked {
+    background-color: #e21c21 !important;
+    border-color: #e21c21 !important;
+}
+
+.form-check-input:focus {
+    box-shadow: none !important;
+}
+
+ .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+
+    .table-avatar {
+    align-items: center;
+    display: inline-flex;
+    font-size: inherit;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table-avatar>a {
+    color: #171717;
+    text-decoration: none;
+}
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
+    position: relative !important;
+    display: inline-block !important;
+    margin-right: 12px !important;
+    top: 0px !important;
+}
+.common-box-slide-wrap .dataTables_wrapper {
+    width: 100% !important;
+    -webkit-transition: .1s ease-in;
+    -o-transition: .1s ease-in;
+    transition: .1s ease-in;
+}
+
+.common-box-slide-wrap.showActivity .dataTables_wrapper {
+    width: calc(100% - 463px) !important;
+    -webkit-transition: .1s ease-in;
+    -o-transition: .1s ease-in;
+    transition: .1s ease-in;
+    height: 631px;
+}
+.common-box-slide-wrap .dataTables_wrapper {
+    width: 100%;
+    /* -webkit-transition: 0.1 ease-in;
+        -o-transition: 0.1s ease-in;
+        transition: 0.1s ease-in; */
+}
+
+.table p {
+    margin-bottom: 0;
+}
+table.table.kidsAssesments-trials-table thead th {
+    background-color:#f3f4f9;
+    font-weight: 700;
+    font-size: 14px;
+    border-top:none !important;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    padding: 14px 4px !important;
+}
+table.table.kidsAssesments-trials-table tbody tr:last-child td
+{
+   border-bottom:none !important;
+}
+table.table.kidsAssesments-trials-table tbody td
+{
+    border-bottom: 1px solid #ddd;
+     background-color:transparent;
+     font-weight: 400;
+     padding: 14px 4px !important;
+}

@@ -88,12 +88,13 @@
                     <div class="hidden group-hover:block ml-9 space-y-1 pt-1">
                         <a href="{{ route('admin.roles.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.roles.*') ? 'bg-blue-700' : '' }}">Manage Roles</a>
                         <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage User</a>
-                        <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Doctors</a>
+                        <a href="{{ route('admin.doctors.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.doctors.*') ? 'bg-blue-700' : '' }}">Manage Doctors</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Clinic</a>
-                        <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Chairs</a>
+                        <a href="{{ route('admin.chairs.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.chairs.*') ? 'bg-blue-700' : '' }}">Manage Chairs</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Medicine</a>
                         <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Rx-Template</a>
-                        <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage LookUps</a>
+                        <a href="{{ route('admin.lookups.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.lookups.*') ? 'bg-blue-700' : '' }}">Manage LookUps</a>
+                        <a href="{{ route('admin.lab-items.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.lab-items.*') ? 'bg-blue-700' : '' }}">Manage Lab Items</a>
                     </div>
                 </details>
             @endif

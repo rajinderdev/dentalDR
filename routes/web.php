@@ -54,6 +54,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/doctors/{id}', [App\Http\Controllers\ManageDoctorController::class, 'update'])->name('admin.doctors.update');
     Route::delete('/admin/doctors/{id}', [App\Http\Controllers\ManageDoctorController::class, 'destroy'])->name('admin.doctors.destroy');
 
+    // Manage Clinic routes
+    Route::get('/admin/clinic', [App\Http\Controllers\ManageClinicController::class, 'index'])->name('admin.clinic.index');
+    Route::put('/admin/clinic', [App\Http\Controllers\ManageClinicController::class, 'update'])->name('admin.clinic.update');
+
     // Manage Chairs routes
     Route::get('/admin/chairs', [App\Http\Controllers\ManageChairController::class, 'index'])->name('admin.chairs.index');
     Route::get('/admin/chairs/create', [App\Http\Controllers\ManageChairController::class, 'create'])->name('admin.chairs.create');
@@ -70,6 +74,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/lookups/{id}', [App\Http\Controllers\ManageLookUpController::class, 'update'])->name('admin.lookups.update');
     Route::delete('/admin/lookups/{id}', [App\Http\Controllers\ManageLookUpController::class, 'destroy'])->name('admin.lookups.destroy');
     Route::post('/admin/lookups/bulk-delete', [App\Http\Controllers\ManageLookUpController::class, 'bulkDelete'])->name('admin.lookups.bulk-delete');
+
+    // Manage Medicine routes
+    Route::get('/admin/medicines', [App\Http\Controllers\ManageMedicineController::class, 'index'])->name('admin.medicines.index');
+    Route::get('/admin/medicines/create', [App\Http\Controllers\ManageMedicineController::class, 'create'])->name('admin.medicines.create');
+    Route::post('/admin/medicines', [App\Http\Controllers\ManageMedicineController::class, 'store'])->name('admin.medicines.store');
+    Route::get('/admin/medicines/{id}/edit', [App\Http\Controllers\ManageMedicineController::class, 'edit'])->name('admin.medicines.edit');
+    Route::put('/admin/medicines/{id}', [App\Http\Controllers\ManageMedicineController::class, 'update'])->name('admin.medicines.update');
+    Route::delete('/admin/medicines/{id}', [App\Http\Controllers\ManageMedicineController::class, 'destroy'])->name('admin.medicines.destroy');
+    Route::post('/admin/medicines/bulk-delete', [App\Http\Controllers\ManageMedicineController::class, 'bulkDelete'])->name('admin.medicines.bulk-delete');
 
     // Manage Lab Items routes
     Route::get('/admin/lab-items', [App\Http\Controllers\ManageLabItemController::class, 'index'])->name('admin.lab-items.index');

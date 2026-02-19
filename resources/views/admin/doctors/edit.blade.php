@@ -55,7 +55,8 @@
                             <label for="PhoneNumber" class="block text-sm font-medium text-gray-700 mb-2">Phone No.</label>
                             <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{ $doctor->PhoneNumber }}"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter phone number">
+                                   placeholder="Enter phone number" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="10" maxlength="10">
                         </div>
                         {{-- Email --}}
                         <div>
@@ -67,7 +68,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {{-- Experience --}}
-                        <div>
+                           <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Experience</label>
                             <div class="flex items-center gap-2">
                                 <input type="number" id="experience_years" name="experience_years" min="0" max="99" value="{{ $expYears }}"
@@ -81,9 +82,10 @@
                         {{-- Rank --}}
                         <div>
                             <label for="Sequence" class="block text-sm font-medium text-gray-700 mb-2">Rank</label>
-                            <input type="number" id="Sequence" name="Sequence" min="0" value="{{ $doctor->Sequence ?? 0 }}"
+                            <input type="text" id="Sequence" name="Sequence" min="0" value="{{ $doctor->Sequence ?? 0 }}"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter rank">
+                                   placeholder="Enter rank" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="3">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -122,9 +124,10 @@
                         {{-- Incentive Value --}}
                         <div>
                             <label for="IncentiveValue" class="block text-sm font-medium text-gray-700 mb-2">Incentive Value</label>
-                            <input type="number" id="IncentiveValue" name="IncentiveValue" step="0.01" min="0" value="{{ $doctor->IncentiveValue }}"
+                            <input type="text" id="IncentiveValue" name="IncentiveValue" step="0.01" min="0" value="{{ $doctor->IncentiveValue }}"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter incentive value">
+                                   placeholder="Enter incentive value" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="3">
                         </div>
                     </div>
                     {{-- Color Code --}}
@@ -133,6 +136,13 @@
                             <label for="ColorCode" class="block text-sm font-medium text-gray-700 mb-2">Color Code</label>
                             <input type="color" id="ColorCode" name="ColorCode" value="{{ $doctor->ColorCode ?? '#3B82F6' }}"
                                    class="w-full h-10 px-1 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer">
+                        </div>
+                        <div>
+                            <label for="CabinNumber" class="block text-sm font-medium text-gray-700 mb-2">Cabin Number</label>
+                             <input type="text" id="CabinNumber" name="CabinNumber" min="0" value="{{ $doctor->CabinNumber ?? 1 }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                   placeholder="Enter cabin number" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="5">
                         </div>
                         <div class="flex items-end">
                             <label class="flex items-center gap-2 cursor-pointer">
@@ -148,7 +158,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Doctor Image</label>
                     <div class="w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden mb-3" id="imagePreviewContainer">
                         @if($doctor->ProviderImage)
-                            <img id="imagePreview" src="data:image/jpeg;base64,{{ $doctor->ProviderImage }}" alt="Doctor Image" class="w-full h-full object-cover">
+                            <img id="imagePreview" src="data:image;base64,{{ $doctor->ProviderImage }}" alt="Doctor Image" class="w-full h-full object-cover">
                             <div id="imagePlaceholder" class="text-center text-gray-400 hidden">
                                 <svg class="w-12 h-12 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>

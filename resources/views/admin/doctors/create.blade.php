@@ -43,14 +43,15 @@
                             <label for="PhoneNumber" class="block text-sm font-medium text-gray-700 mb-2">Phone No.</label>
                             <input type="text" id="PhoneNumber" name="PhoneNumber"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter phone number">
+                                   placeholder="Enter phone number" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="10" maxlength="10">
                         </div>
                         {{-- Email --}}
                         <div>
-                            <label for="Email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <label for="Email" class="block text-sm font-medium text-gray-700 mb-2">Email <sup class="star">*</sup></label>
                             <input type="email" id="Email" name="Email"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter email address">
+                                   placeholder="Enter email address" required>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -69,9 +70,10 @@
                         {{-- Rank --}}
                         <div>
                             <label for="Sequence" class="block text-sm font-medium text-gray-700 mb-2">Rank</label>
-                            <input type="number" id="Sequence" name="Sequence" min="0" value="0"
+                             <input type="text" id="Sequence" name="Sequence" min="0" value="{{ $doctor->Sequence ?? 0 }}"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter rank">
+                                   placeholder="Enter rank" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="3">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -110,9 +112,10 @@
                         {{-- Incentive Value --}}
                         <div>
                             <label for="IncentiveValue" class="block text-sm font-medium text-gray-700 mb-2">Incentive Value</label>
-                            <input type="number" id="IncentiveValue" name="IncentiveValue" step="0.01" min="0"
+                            <input type="text" id="IncentiveValue" name="IncentiveValue" step="0.01" min="0"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                   placeholder="Enter incentive value">
+                                   placeholder="Enter incentive value" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="3">
                         </div>
                     </div>
                     {{-- Color Code --}}
@@ -121,6 +124,13 @@
                             <label for="ColorCode" class="block text-sm font-medium text-gray-700 mb-2">Color Code</label>
                             <input type="color" id="ColorCode" name="ColorCode" value="#3B82F6"
                                    class="w-full h-10 px-1 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer">
+                        </div>
+                        <div>
+                            <label for="CabinNumber" class="block text-sm font-medium text-gray-700 mb-2">Cabin Number</label>
+                             <input type="text" id="CabinNumber" name="CabinNumber" min="0" value="{{ $doctor->CabinNumber ?? 1 }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                   placeholder="Enter cabin number" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        minlength="1" maxlength="5">
                         </div>
                         <div class="flex items-end">
                             <label class="flex items-center gap-2 cursor-pointer">
@@ -184,16 +194,16 @@
             <h2 class="text-lg font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">User Information <span class="text-xs font-normal text-gray-500">(Optional - Create login credentials for this doctor)</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                    <label for="login_id" class="block text-sm font-medium text-gray-700 mb-2">Login ID (Email)</label>
+                    <label for="login_id" class="block text-sm font-medium text-gray-700 mb-2">Login ID (Email)<sup class="star">*</sup></label>
                     <input type="email" id="login_id" name="login_id"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                           placeholder="Enter login email">
+                           placeholder="Enter login email" readonly>
                 </div>
                 <div>
-                    <label for="login_password" class="block text-sm font-medium text-gray-700 mb-2">Password <span class="text-xs text-gray-500">(Min. 6 Characters)</span></label>
+                    <label for="login_password" class="block text-sm font-medium text-gray-700 mb-2">Password <sup class="star">*</sup><span class="text-xs text-gray-500">(Min. 6 Characters)</span></label>
                     <input type="password" id="login_password" name="login_password" minlength="6"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                           placeholder="Enter password">
+                           placeholder="Enter password" required>
                 </div>
             </div>
         </div>
@@ -235,6 +245,11 @@ function removeImage() {
 }
 
 $(document).ready(function() {
+    // Auto-fill login_id when email is typed
+    $('#Email').on('keyup', function() {
+        $('#login_id').val($(this).val());
+    });
+
     $('<style>')
         .prop('type', 'text/css')
         .html(`
@@ -255,14 +270,26 @@ $(document).ready(function() {
         ignore: [],
         rules: {
             ProviderName: { required: true },
-            Email: { email: true },
-            login_id: { email: true },
-            login_password: { minlength: 6 }
+            Email: { required: true, email: true },
+            experience_years: { required: true, min: 0 },
+            login_id: { 
+                required: function(element) {
+                    return $('#login_password').val().length > 0;
+                }, 
+                email: true 
+            },
+            login_password: { 
+                required: function(element) {
+                    return $('#login_id').val().length > 0;
+                }, 
+                minlength: 6 
+            }
         },
         messages: {
             ProviderName: { required: "Please enter doctor name" },
-            Email: { email: "Please enter a valid email" },
-            login_id: { email: "Please enter a valid email" },
+            Email: { required: "Please enter email", email: "Please enter a valid email" },
+            experience_years: { required: "Please enter experience years" },
+            login_id: { required: "Please enter login ID", email: "Please enter a valid email" },
             login_password: { minlength: "Password must be at least 6 characters" }
         },
         submitHandler: function(form) {

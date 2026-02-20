@@ -7,6 +7,7 @@ use App\Models\ChairSlot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\EntityDataHelper;
 use Yajra\DataTables\Facades\DataTables as YajraDataTables;
 
 class ManageChairController extends Controller
@@ -14,8 +15,7 @@ class ManageChairController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = ClinicChair::where('IsDeleted', false)
-                ->where('ClinicID', Auth::user()->ClinicID);
+            $query = ClinicChair::where('IsDeleted', false);
 
             return YajraDataTables::of($query)
                 ->filter(function ($query) use ($request) {
@@ -48,6 +48,9 @@ class ManageChairController extends Controller
                     }
                     return 'N/A';
                 })
+                 ->editColumn('CreatedOn', function ($doctor) {
+                    return $doctor->CreatedOn ? $doctor->CreatedOn->format('M d, Y') : 'N/A';
+                })
                 ->addColumn('action', function ($chair) {
                     return view('admin.chairs.actions', compact('chair'))->render();
                 })
@@ -75,7 +78,7 @@ class ManageChairController extends Controller
 
         try {
             $chair = ClinicChair::create([
-                'ClinicID' => Auth::user()->ClinicID,
+                'ClinicID' => EntityDataHelper::getClinicId(),
                 'Title' => $request->Title,
                 'Description' => $request->Description,
                 'IsDeleted' => false,
@@ -96,6 +99,7 @@ class ManageChairController extends Controller
                     'EndDateTime' => $endTime,
                     'SlotInterval' => $request->slot_interval,
                     'CreatedOn' => now(),
+                    'ClinicID' => EntityDataHelper::getClinicId(),
                     'CreatedBy' => Auth::user()->UserID ?? 'System',
                     'LastUpdatedOn' => now(),
                     'LastUpdatedBy' => Auth::user()->UserID ?? 'System',

@@ -48,6 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Manage Doctors routes
     Route::get('/admin/doctors', [App\Http\Controllers\ManageDoctorController::class, 'index'])->name('admin.doctors.index');
+    Route::get('/admin/doctors/data', [App\Http\Controllers\ManageDoctorController::class, 'getDoctorsData'])->name('admin.doctors.data');
     Route::get('/admin/doctors/create', [App\Http\Controllers\ManageDoctorController::class, 'create'])->name('admin.doctors.create');
     Route::post('/admin/doctors', [App\Http\Controllers\ManageDoctorController::class, 'store'])->name('admin.doctors.store');
     Route::get('/admin/doctors/{id}/edit', [App\Http\Controllers\ManageDoctorController::class, 'edit'])->name('admin.doctors.edit');
@@ -56,7 +57,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Manage Clinic routes
     Route::get('/admin/clinic', [App\Http\Controllers\ManageClinicController::class, 'index'])->name('admin.clinic.index');
-    Route::put('/admin/clinic', [App\Http\Controllers\ManageClinicController::class, 'update'])->name('admin.clinic.update');
+    Route::get('/admin/clinic/data', [App\Http\Controllers\ManageClinicController::class, 'getClinicsData'])->name('admin.clinic.data');
+    Route::get('/admin/clinic/create', [App\Http\Controllers\ManageClinicController::class, 'create'])->name('admin.clinic.create');
+    Route::get('/admin/clinic/states/{countryId}', [App\Http\Controllers\ManageClinicController::class, 'getStatesByCountry'])->name('admin.clinic.getStatesByCountry');
+    Route::post('/admin/clinic', [App\Http\Controllers\ManageClinicController::class, 'store'])->name('admin.clinic.store');
+    Route::get('/admin/clinic/{id}/edit', [App\Http\Controllers\ManageClinicController::class, 'edit'])->name('admin.clinic.edit');
+    Route::put('/admin/clinic/{id}', [App\Http\Controllers\ManageClinicController::class, 'update'])->name('admin.clinic.update');
+    Route::delete('/admin/clinic/{id}', [App\Http\Controllers\ManageClinicController::class, 'destroy'])->name('admin.clinic.destroy');
 
     // Manage Chairs routes
     Route::get('/admin/chairs', [App\Http\Controllers\ManageChairController::class, 'index'])->name('admin.chairs.index');

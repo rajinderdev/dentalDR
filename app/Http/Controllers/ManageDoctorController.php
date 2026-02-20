@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
+use App\Helpers\EntityDataHelper;
 use Yajra\DataTables\Facades\DataTables as YajraDataTables;
 
 class ManageDoctorController extends Controller
@@ -111,7 +112,7 @@ class ManageDoctorController extends Controller
                 'IncentiveValue' => $request->IncentiveValue,
                 'ColorCode' => $request->ColorCode,
                 'DisplayInAppointmentsView' => $request->has('DisplayInAppointmentsView') ? true : true,
-                'ClinicID' => Auth::user()->ClinicID,
+                'ClinicID' => EntityDataHelper::getClinicId(),
                 'IsDeleted' => false,
                 'LastUpdatedBy' => Auth::user()->UserID ?? 'System',
                 'LastUpdatedOn' => now(),
@@ -119,8 +120,7 @@ class ManageDoctorController extends Controller
                 'Attribute1' => $request->start_time,
                 'Attribute2' => $request->end_time,
                 'Attribute3' => $request->slot_duration,
-                'CabinNumber' => $request->CabinNumber,
-                'ClinicID' => Auth::user()->ClinicID ?? 'E403D9FF-A62D-463A-83D1-91C0EEEA2CD4',
+                'CabinNumber' => $request->CabinNumber
             ];
 
             // Handle image upload

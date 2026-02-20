@@ -30,6 +30,7 @@
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Start Time</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">End Time</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Time Interval</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">CreatedOn</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
@@ -73,7 +74,7 @@ $(document).ready(function() {
             {
                 data: 'Description',
                 name: 'Description',
-                orderable: false,
+                orderable: true,
                 render: function(data) {
                     return data || 'N/A';
                 }
@@ -92,6 +93,11 @@ $(document).ready(function() {
                 data: 'TimeInterval',
                 name: 'TimeInterval',
                 orderable: false
+            },
+           { 
+                data: 'CreatedOn',
+                name: 'CreatedOn',
+                orderable: true
             },
             {
                 data: 'action',

@@ -130,4 +130,19 @@ class EntityDataHelper
             return ($lastInvoice->InvoiceNo ?? 0) + 1;
         });
     }
+
+     public static function getClinicId($authUser = null)
+    {
+        $authUser = $authUser ?? Auth::user();
+        $userID = $authUser->UserID ?? null;
+        if (!$authUser) {
+            $authUser = Auth::user();
+        }
+
+        // Get user email for tracking
+        $UserID = $authUser && !empty($authUser->UserID) ? $authUser->UserID : null;
+        $clinicInfo = UsersClinicInfo::where('UserID', $authUser->UserID)->first();
+        $clinicId = $clinicInfo ? $clinicInfo->ClinicID : '7B13B11A-9A05-4E1D-A547-7E5A2F2B3FD2';
+        return $clinicId;
+    }
 }

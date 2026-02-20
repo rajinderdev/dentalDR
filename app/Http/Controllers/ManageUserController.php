@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables as YajraDataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Helpers\EntityDataHelper;
 class ManageUserController extends Controller
 {
     public function index(Request $request)
@@ -122,7 +123,7 @@ class ManageUserController extends Controller
                         'ProviderName' => $request->name,
                         'Email' => $request->email,
                         'UserID' => $user->UserID,
-                        'ClinicID' => Auth::user()->ClinicID ?? 'E403D9FF-A62D-463A-83D1-91C0EEEA2CD4',
+                        'ClinicID' => EntityDataHelper::getClinicId(),
                         'CreatedOn' => now(),
                         'CreatedBy' => Auth::user()->UserID ?? 'System',
                         'LastUpdatedOn' => now(),
@@ -135,7 +136,7 @@ class ManageUserController extends Controller
                         // Create UsersClinicInfo record
                         UsersClinicInfo::create([
                             'UserID' => $user->UserID,
-                            'ClinicID' => Auth::user()->ClinicID ?? 'E403D9FF-A62D-463A-83D1-91C0EEEA2CD4',
+                            'ClinicID' => EntityDataHelper::getClinicId(),
                             'ProviderID' => $provider->ProviderID,
                             'IsDeleted' => false,
                             'CreatedOn' => now(),

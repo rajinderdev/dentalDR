@@ -91,6 +91,43 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/medicines/{id}', [App\Http\Controllers\ManageMedicineController::class, 'destroy'])->name('admin.medicines.destroy');
     Route::post('/admin/medicines/bulk-delete', [App\Http\Controllers\ManageMedicineController::class, 'bulkDelete'])->name('admin.medicines.bulk-delete');
 
+    // Manage Rx-Template routes
+    Route::get('/admin/rx-templates', [App\Http\Controllers\ManageRxTemplateController::class, 'index'])->name('admin.rx-templates.index');
+    Route::get('/admin/rx-templates/create', [App\Http\Controllers\ManageRxTemplateController::class, 'create'])->name('admin.rx-templates.create');
+    Route::post('/admin/rx-templates', [App\Http\Controllers\ManageRxTemplateController::class, 'store'])->name('admin.rx-templates.store');
+    Route::get('/admin/rx-templates/{id}/edit', [App\Http\Controllers\ManageRxTemplateController::class, 'edit'])->name('admin.rx-templates.edit');
+    Route::put('/admin/rx-templates/{id}', [App\Http\Controllers\ManageRxTemplateController::class, 'update'])->name('admin.rx-templates.update');
+    Route::delete('/admin/rx-templates/{id}', [App\Http\Controllers\ManageRxTemplateController::class, 'destroy'])->name('admin.rx-templates.destroy');
+    Route::post('/admin/rx-templates/bulk-delete', [App\Http\Controllers\ManageRxTemplateController::class, 'bulkDelete'])->name('admin.rx-templates.bulk-delete');
+    Route::get('/admin/rx-templates/search-medicines', [App\Http\Controllers\ManageRxTemplateController::class, 'searchMedicines'])->name('admin.rx-templates.search-medicines');
+
+    // Manage Clinic Attributes routes
+    Route::get('/admin/clinic-attributes', [App\Http\Controllers\ManageClinicAttributeController::class, 'index'])->name('admin.clinic-attributes.index');
+    Route::post('/admin/clinic-attributes/update-value', [App\Http\Controllers\ManageClinicAttributeController::class, 'updateValue'])->name('admin.clinic-attributes.update-value');
+
+    // Manage Communication Attributes routes
+    Route::get('/admin/communication-attributes', [App\Http\Controllers\ManageCommunicationAttributeController::class, 'index'])->name('admin.communication-attributes.index');
+    Route::post('/admin/communication-attributes', [App\Http\Controllers\ManageCommunicationAttributeController::class, 'update'])->name('admin.communication-attributes.update');
+
+    // Manage DocType routes
+    Route::get('/admin/doc-types', [App\Http\Controllers\ManageDocTypeController::class, 'index'])->name('admin.doc-types.index');
+    Route::post('/admin/doc-types', [App\Http\Controllers\ManageDocTypeController::class, 'store'])->name('admin.doc-types.store');
+    Route::get('/admin/doc-types/{id}/edit', [App\Http\Controllers\ManageDocTypeController::class, 'edit'])->name('admin.doc-types.edit');
+    Route::put('/admin/doc-types/{id}', [App\Http\Controllers\ManageDocTypeController::class, 'update'])->name('admin.doc-types.update');
+    Route::delete('/admin/doc-types/{id}', [App\Http\Controllers\ManageDocTypeController::class, 'destroy'])->name('admin.doc-types.destroy');
+    Route::post('/admin/doc-types/bulk-delete', [App\Http\Controllers\ManageDocTypeController::class, 'bulkDelete'])->name('admin.doc-types.bulk-delete');
+
+    // Manage Bank Accounts routes
+    Route::get('/admin/bank-accounts', [App\Http\Controllers\ManageBankAccountController::class, 'index'])->name('admin.bank-accounts.index');
+    Route::post('/admin/bank-accounts', [App\Http\Controllers\ManageBankAccountController::class, 'store'])->name('admin.bank-accounts.store');
+    Route::get('/admin/bank-accounts/{id}/edit', [App\Http\Controllers\ManageBankAccountController::class, 'edit'])->name('admin.bank-accounts.edit');
+    Route::put('/admin/bank-accounts/{id}', [App\Http\Controllers\ManageBankAccountController::class, 'update'])->name('admin.bank-accounts.update');
+    Route::delete('/admin/bank-accounts/{id}', [App\Http\Controllers\ManageBankAccountController::class, 'destroy'])->name('admin.bank-accounts.destroy');
+    Route::post('/admin/bank-accounts/bulk-delete', [App\Http\Controllers\ManageBankAccountController::class, 'bulkDelete'])->name('admin.bank-accounts.bulk-delete');
+
+    // Users Activities route
+    Route::get('/admin/user-activities', [App\Http\Controllers\UserActivitiesController::class, 'index'])->name('admin.user-activities.index');
+
     // Manage Lab Items routes
     Route::get('/admin/lab-items', [App\Http\Controllers\ManageLabItemController::class, 'index'])->name('admin.lab-items.index');
     Route::get('/admin/lab-items/create', [App\Http\Controllers\ManageLabItemController::class, 'create'])->name('admin.lab-items.create');

@@ -92,9 +92,14 @@
                         <a href="{{ route('admin.clinic.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.clinic.*') ? 'bg-blue-700' : '' }}">Manage Clinic</a>
                         <a href="{{ route('admin.chairs.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.chairs.*') ? 'bg-blue-700' : '' }}">Manage Chairs</a>
                         <a href="{{ route('admin.medicines.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.medicines.*') ? 'bg-blue-700' : '' }}">Manage Medicine</a>
-                        <a href="#" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">Manage Rx-Template</a>
+                        <a href="{{ route('admin.rx-templates.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.rx-templates.*') ? 'bg-blue-700' : '' }}">Manage Rx-Template</a>
                         <a href="{{ route('admin.lookups.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.lookups.*') ? 'bg-blue-700' : '' }}">Manage LookUps</a>
+                        <a href="{{ route('admin.bank-accounts.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.bank-accounts.*') ? 'bg-blue-700' : '' }}">Manage Bank Acc</a>
+                        <a href="{{ route('admin.doc-types.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.doc-types.*') ? 'bg-blue-700' : '' }}">Manage DocType</a>
+                        <a href="{{ route('admin.clinic-attributes.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.clinic-attributes.*') ? 'bg-blue-700' : '' }}">Manage Clinic Attributes</a>
+                        <a href="{{ route('admin.communication-attributes.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.communication-attributes.*') ? 'bg-blue-700' : '' }}">Manage Communication A...</a>
                         <a href="{{ route('admin.lab-items.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.lab-items.*') ? 'bg-blue-700' : '' }}">Manage Lab Items</a>
+                        <a href="{{ route('admin.user-activities.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.user-activities.*') ? 'bg-blue-700' : '' }}">Users Activities</a>
                     </div>
                 </details>
             @endif

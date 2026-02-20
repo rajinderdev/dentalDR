@@ -20,7 +20,7 @@
         <label for="searchInput" class="text-sm font-medium text-gray-700">Search in Document Types:</label>
         <input type="text" id="searchInput" placeholder="Search..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
-        <a href="{{ route('admin.doc-types.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <a href="{{ route('admin.doc-types.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             Clear Filters
         </a>
     </div>

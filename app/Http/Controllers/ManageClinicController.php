@@ -21,6 +21,23 @@ class ManageClinicController extends Controller
     {
         $clinics = Clinic::query();
 
+        // Apply search filter
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $clinics->where(function($query) use ($searchTerm) {
+                $query->where('Name', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('Email', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('Phone', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('City', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('State', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('Address1', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('Address2', 'LIKE', "%{$searchTerm}%")
+                      ->orWhereHas('country', function($countryQuery) use ($searchTerm) {
+                          $countryQuery->where('CountryName', 'LIKE', "%{$searchTerm}%");
+                      });
+            });
+        }
+
         return DataTables::of($clinics)
             ->addColumn('serial', function($clinic) {
                 return '';
@@ -44,17 +61,9 @@ class ManageClinicController extends Controller
                 ';
             })
             ->addColumn('Country', function($clinic) {
-                switch($clinic->CountryID) {
-                    case 1: return 'India';
-                    case 2: return 'United States';
-                    case 3: return 'United Kingdom';
-                    case 4: return 'Canada';
-                    case 5: return 'Australia';
-                    case 6: return 'UAE';
-                    case 7: return 'Singapore';
-                    case 8: return 'Malaysia';
-                    default: return '-';
-                }
+                $counry = Country::where('CountryID', $clinic->CountryID)->first();
+                return $counry ? $counry->CountryName : 'N/A';
+               
             })
             ->editColumn('CreatedOn', function($clinic) {
                 return $clinic->CreatedOn ? \Carbon\Carbon::parse($clinic->CreatedOn)->format('M d, Y') : '-';

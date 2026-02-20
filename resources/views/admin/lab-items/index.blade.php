@@ -5,6 +5,15 @@
 <div class="bg-white rounded-lg shadow-sm p-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Manage Lab Items</h1>
+        <div class="flex gap-2">
+            
+                <a href="{{ route('admin.lab-items.create') }}" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-1"></i> Add New Lab Item
+                </a>
+                <button type="button" id="deleteSelectedBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" disabled>
+                    <i class="fas fa-trash mr-1"></i> Delete Lab Item
+                </button>
+        </div>
     </div>
 
     <!-- Search, Filter and Actions -->
@@ -17,12 +26,7 @@
                 <option value="{{ $category }}">{{ $category }}</option>
             @endforeach
         </select>
-        <a href="{{ route('admin.lab-items.create') }}" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-plus mr-1"></i> Add New Lab Item
-        </a>
-        <button type="button" id="deleteSelectedBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" disabled>
-            <i class="fas fa-trash mr-1"></i> Delete Lab Item
-        </button>
+     
         <a href="{{ route('admin.lab-items.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             Clear Filters
         </a>

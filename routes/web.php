@@ -72,6 +72,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/chairs/{id}/edit', [App\Http\Controllers\ManageChairController::class, 'edit'])->name('admin.chairs.edit');
     Route::put('/admin/chairs/{id}', [App\Http\Controllers\ManageChairController::class, 'update'])->name('admin.chairs.update');
     Route::delete('/admin/chairs/{id}', [App\Http\Controllers\ManageChairController::class, 'destroy'])->name('admin.chairs.destroy');
+    Route::post('/admin/chairs/bulk-delete', [App\Http\Controllers\ManageChairController::class, 'bulkDelete'])->name('admin.chairs.bulk-delete');
 
     // Manage LookUps routes
     Route::get('/admin/lookups', [App\Http\Controllers\ManageLookUpController::class, 'index'])->name('admin.lookups.index');

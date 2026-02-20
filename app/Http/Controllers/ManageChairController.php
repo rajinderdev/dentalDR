@@ -216,4 +216,39 @@ class ManageChairController extends Controller
             ], 500);
         }
     }
+
+    public function bulkDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            
+            if (empty($ids)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No chairs selected for deletion.',
+                ], 400);
+            }
+
+            $updatedCount = ClinicChair::whereIn('ChairID', $ids)
+                ->update([
+                    'IsDeleted' => true,
+                    'LastUpdatedBy' => Auth::user()->UserID ?? 'System',
+                    'LastUpdatedOn' => now(),
+                ]);
+
+            Log::info('Chairs bulk deleted successfully', ['count' => $updatedCount, 'ids' => $ids]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $updatedCount . ' chair(s) deleted successfully.',
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error bulk deleting chairs', ['error' => $e->getMessage(), 'ids' => $request->ids]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting chairs: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

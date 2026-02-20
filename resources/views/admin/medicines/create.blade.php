@@ -19,16 +19,16 @@
         <div class="border border-gray-200 rounded-lg p-4 md:p-6">
             <h2 class="text-lg font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">Medicine Information</h2>
             <div class="space-y-3 md:space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Medicine Name --}}
-                    <div class="md:col-span-2">
+                    <div class="md:col-span-3">
                         <label for="GenericName" class="block text-sm font-medium text-gray-700 mb-2">Medicine Name <sup class="star">*</sup></label>
                         <input type="text" id="GenericName" name="GenericName"
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                                placeholder="Enter medicine name" required>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Contraindications --}}
                     <div>
                         <label for="Contraindications" class="block text-sm font-medium text-gray-700 mb-2">Contraindications</label>
@@ -43,8 +43,6 @@
                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                                   placeholder="Enter interactions"></textarea>
                     </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {{-- Adverse Effects --}}
                     <div>
                         <label for="AdverseEffects" class="block text-sm font-medium text-gray-700 mb-2">Adverse Effects</label>
@@ -52,6 +50,8 @@
                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                                   placeholder="Enter adverse effects"></textarea>
                     </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Overdose Management --}}
                     <div>
                         <label for="OverdozeManagement" class="block text-sm font-medium text-gray-700 mb-2">Overdose Management</label>
@@ -59,8 +59,6 @@
                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                                   placeholder="Enter overdose management"></textarea>
                     </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {{-- Precautions --}}
                     <div>
                         <label for="Precautions" class="block text-sm font-medium text-gray-700 mb-2">Precautions</label>
@@ -76,9 +74,9 @@
                                   placeholder="Enter patient alerts"></textarea>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Other Info --}}
-                    <div>
+                    <div class="md:col-span-3">
                         <label for="OtherInfo" class="block text-sm font-medium text-gray-700 mb-2">Other Information</label>
                         <textarea id="OtherInfo" name="OtherInfo" rows="3"
                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"

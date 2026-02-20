@@ -144,4 +144,9 @@ protected static function boot()
 	{
 		return $this->hasMany(ClinicLabWorkComponent::class, 'ClinicID');
 	}
+
+	public function country()
+	{
+		return $this->belongsTo(Country::class, 'CountryID');
+	}
 }

@@ -5,6 +5,14 @@
 <div class="bg-white rounded-lg shadow-sm p-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Manage LookUps</h1>
+         <div class="flex gap-2">
+            <a href="{{ route('admin.lookups.create') }}" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-plus mr-1"></i> Add New Item
+            </a>
+            <button type="button" id="deleteSelectedBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" disabled>
+                <i class="fas fa-trash mr-1"></i> Delete Item
+            </button>
+        </div>
     </div>
 
     <!-- Search, Filter and Actions -->
@@ -17,12 +25,8 @@
                 <option value="{{ $category }}">{{ $category }}</option>
             @endforeach
         </select>
-        <a href="{{ route('admin.lookups.create') }}" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-plus mr-1"></i> Add New Item
-        </a>
-        <button type="button" id="deleteSelectedBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" disabled>
-            <i class="fas fa-trash mr-1"></i> Delete Item
-        </button>
+      
+      
         <a href="{{ route('admin.lookups.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             Clear Filters
         </a>
@@ -40,6 +44,7 @@
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Description</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Importance</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Category</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">CreatedOn</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
@@ -103,6 +108,11 @@ $(document).ready(function() {
                 orderable: true
             },
             {
+                data: 'LastUpdatedOn',
+                name: 'LastUpdatedOn',
+                orderable: true
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
@@ -110,7 +120,7 @@ $(document).ready(function() {
                 className: 'text-right'
             },
         ],
-        order: [[1, 'asc']],
+        order: [[5, 'desc']],
         language: {
             processing: '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Processing...</span></div>',
             zeroRecords: 'No lookup items found',

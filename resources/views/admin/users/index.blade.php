@@ -28,7 +28,7 @@
             <option value="locked">Locked</option>
             <option value="unlocked">Unlocked</option>
         </select>
-        <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             Clear Filters
         </a>
     </div>

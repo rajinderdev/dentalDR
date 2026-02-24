@@ -1,4 +1,4 @@
-<aside class="peer group fixed top-0 left-0 h-full w-16 hover:w-56 bg-blue-600 text-white flex flex-col z-30 transition-all duration-200 overflow-hidden">
+<aside class="peer group fixed top-0 left-0 h-full w-16 hover:w-66 bg-blue-600 text-white flex flex-col z-30 transition-all duration-200 overflow-hidden sidebaar">
     {{-- Logo --}}
     <div class="flex items-center gap-2 px-5 py-5">
         <a href="https://dental.stgserver.co.in/dashboard">
@@ -7,7 +7,7 @@
     </div>
 
     {{-- Navigation --}}
-    <nav class="flex-1 overflow-y-auto px-2 group-hover:px-3 py-2 space-y-1">
+    <nav class="flex-1 overflow-y-auto px-2 group-hover:px-3 py-2 space-y-1 navbar">
         <a href="https://dental.stgserver.co.in/dashboard" class="flex items-center justify-center group-hover:justify-start gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-700 text-white' : 'text-blue-100 hover:bg-blue-500' }}">
             <img src="{{asset('assets/images/menu/dashboard-active.png')}}">
             <span class="hidden group-hover:inline">Dashboard</span>
@@ -57,7 +57,7 @@
                 </a>
                 <a href="https://dental.stgserver.co.in/manage/lab-Lookups" class="flex items-center justify-center group-hover:justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500">
                     <span class="flex items-center gap-3">
-                        <img src="h{{asset('assets/images/menu/lab-lookups.png')}}">
+                        <img src="{{asset('assets/images/menu/lab-lookups.png')}}">
                         <span class="hidden group-hover:inline">Manage lab Lookups</span>
                     </span>
                 </a>

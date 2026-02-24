@@ -48,64 +48,76 @@
 </div>
 
 <!-- Bank Account Modal -->
-<div id="bankAccountModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-opacity-30" onclick="closeModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
+<!-- Bank Account Modal -->
+<div id="bankAccountModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black/50">
+    <div class="relative p-4 w-full max-w-lg">
+        <div class="relative bg-white border border-gray-200 rounded-xl shadow-lg p-6">
             <!-- Modal Header -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h2 id="modalTitle" class="text-lg font-semibold text-gray-800">Bank Accounts</h2>
-                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                <h3 class="text-lg font-semibold text-gray-800" id="modalTitle">Add Bank Account</h3>
+                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg w-9 h-9 inline-flex justify-center items-center transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                     </svg>
+                    <span class="sr-only">Close modal</span>
                 </button>
             </div>
 
             <!-- Modal Body -->
-            <form id="bankAccountForm" class="px-6 py-4">
-                @csrf
+            <form id="bankAccountForm">
                 <input type="hidden" id="editAccountId" value="">
 
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">Bank Accounts</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-4">
-                            <label for="BankAccountName" class="w-32 text-sm font-medium text-gray-700 text-right">Bank Name<sup class="star">*</sup></label>
-                            <input type="text" id="BankAccountName" name="BankAccountName"
-                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                   placeholder="Enter bank name" required>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <label for="AccountNumber" class="w-32 text-sm font-medium text-gray-700 text-right">Account Number<sup class="star">*</sup></label>
-                            <input type="text" id="AccountNumber" name="AccountNumber"
-                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                   placeholder="Enter account number">
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <label for="Branch" class="w-32 text-sm font-medium text-gray-700 text-right">Branch<sup class="star">*</sup></label>
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Bank Name -->
+                    <div>
+                        <label for="BankAccountName" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Bank Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="BankAccountName" name="BankAccountName"
+                               placeholder="Enter bank name"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                    </div>
+
+                    <!-- Account Number -->
+                    <div>
+                        <label for="AccountNumber" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Account Number <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="AccountNumber" name="AccountNumber"
+                               placeholder="Enter account number"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                    </div>
+
+                    <!-- Branch & City in a row -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="Branch" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                Branch <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="Branch" name="Branch"
-                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                   placeholder="Enter branch">
+                                   placeholder="Enter branch"
+                                   class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
                         </div>
-                        <div class="flex items-center gap-4">
-                            <label for="City" class="w-32 text-sm font-medium text-gray-700 text-right">City<sup class="star">*</sup></label>
+                        <div>
+                            <label for="City" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                City <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="City" name="City"
-                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                   placeholder="Enter city">
+                                   placeholder="Enter city"
+                                   class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-200">
-                    <button type="submit"
-                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm">
-                        Save
-                    </button>
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
                     <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
+                            class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors">
+                        <i class="fas fa-save mr-1"></i> Save Account
                     </button>
                 </div>
             </form>
@@ -227,15 +239,15 @@ function openAddModal() {
     $('#modalTitle').text('Bank Accounts');
     $('#editAccountId').val('');
     $('#bankAccountForm')[0].reset();
-    $('#bankAccountModal').removeClass('hidden');
+    $('#bankAccountModal').removeClass('hidden').addClass('flex'); // fix here
 }
 
 function closeModal() {
-    $('#bankAccountModal').addClass('hidden');
+    $('#bankAccountModal').addClass('hidden').removeClass('flex'); // fix here
     $('#bankAccountForm')[0].reset();
     $('#editAccountId').val('');
+    $('#bankAccountForm').data('validator').resetForm();
 }
-
 function editBankAccount(accountId) {
     $.ajax({
         url: '{{ route("admin.bank-accounts.edit", ":id") }}'.replace(':id', accountId),
@@ -247,7 +259,7 @@ function editBankAccount(accountId) {
             $('#AccountNumber').val(data.AccountNumber);
             $('#Branch').val(data.Branch);
             $('#City').val(data.City);
-            $('#bankAccountModal').removeClass('hidden');
+            $('#bankAccountModal').removeClass('hidden').addClass('flex'); // fix here
         },
         error: function(xhr) {
             Swal.fire('Error!', 'Failed to load bank account details.', 'error');
@@ -256,53 +268,55 @@ function editBankAccount(accountId) {
 }
 
 $('#bankAccountForm').on('submit', function(e) {
-    e.preventDefault();
+     e.preventDefault();
+    if ($(this).valid()) {
 
-    var accountId = $('#editAccountId').val();
-    var isEdit = accountId !== '';
-    var url = isEdit
-        ? '{{ route("admin.bank-accounts.update", ":id") }}'.replace(':id', accountId)
-        : '{{ route("admin.bank-accounts.store") }}';
+        var accountId = $('#editAccountId').val();
+        var isEdit = accountId !== '';
+        var url = isEdit
+            ? '{{ route("admin.bank-accounts.update", ":id") }}'.replace(':id', accountId)
+            : '{{ route("admin.bank-accounts.store") }}';
 
-    var formData = {
-        _token: '{{ csrf_token() }}',
-        BankAccountName: $('#BankAccountName').val(),
-        AccountNumber: $('#AccountNumber').val(),
-        Branch: $('#Branch').val(),
-        City: $('#City').val()
-    };
+        var formData = {
+            _token: '{{ csrf_token() }}',
+            BankAccountName: $('#BankAccountName').val(),
+            AccountNumber: $('#AccountNumber').val(),
+            Branch: $('#Branch').val(),
+            City: $('#City').val()
+        };
 
-    if (isEdit) {
-        formData._method = 'PUT';
-    }
-
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: formData,
-        success: function(res) {
-            if (res.success) {
-                closeModal();
-                Swal.fire('Success!', res.message, 'success').then(() => {
-                    $('#bank-account-table').DataTable().ajax.reload();
-                });
-            } else {
-                Swal.fire('Error!', res.message || 'An error occurred.', 'error');
-            }
-        },
-        error: function(xhr) {
-            let errorMessage = 'An error occurred.';
-            if (xhr.responseJSON) {
-                if (xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                }
-                if (xhr.responseJSON.errors) {
-                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('<br>');
-                }
-            }
-            Swal.fire('Error!', errorMessage, 'error');
+        if (isEdit) {
+            formData._method = 'PUT';
         }
-    });
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(res) {
+                if (res.success) {
+                    closeModal();
+                    Swal.fire('Success!', res.message, 'success').then(() => {
+                        $('#bank-account-table').DataTable().ajax.reload();
+                    });
+                } else {
+                    Swal.fire('Error!', res.message || 'An error occurred.', 'error');
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'An error occurred.';
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    if (xhr.responseJSON.errors) {
+                        errorMessage = Object.values(xhr.responseJSON.errors).flat().join('<br>');
+                    }
+                }
+                Swal.fire('Error!', errorMessage, 'error');
+            }
+        });
+    }
 });
 
 function deleteBankAccount(accountId) {
@@ -394,6 +408,21 @@ function bulkDeleteAccounts() {
 }
 
 $(document).ready(function() {
+     $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            label.error {
+                color: #dc3545 !important;
+                font-size: 0.875rem !important;
+                margin-top: 0.25rem !important;
+                display: block !important;
+            }
+            input.error, select.error {
+                border-color: #dc3545 !important;
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+            }
+        `)
+        .appendTo('head');
     $("#bankAccountForm").validate({
         ignore: [],
         rules: {

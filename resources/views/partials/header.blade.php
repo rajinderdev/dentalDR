@@ -9,32 +9,31 @@
         </button>
 
         {{-- Search bar: pill/rounded, subtle border, with filter icon --}}
-        <div class="flex items-center flex-1 max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl">
-            <div class="flex items-center bg-white border rounded-full px-2 md:px-3 py-1.5 gap-2 search-box w-full">
-                <svg class="w-3.5 h-3.5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-center flex-1 max-w-xs">
+            <div class="flex items-center ml-10 bg-gray-50 border border-gray-300 rounded-full px-2 md:px-3 py-1.5 gap-2 search-box w-80">
+                <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
+              
                 <input
                     type="text"
                     placeholder="Search by keyword"
-                    class="text-sm text-gray-500 placeholder-gray-400 focus:outline-none bg-transparent flex-1 w-full"
+                    class="text-sm text-gray-600 placeholder-gray-400 focus:outline-none bg-transparent flex-1 w-full headersearch search-box"
                 />
                 {{-- Filter lines icon --}}
                 <button class="text-gray-400 hover:text-gray-500 flex-shrink-0 hidden sm:block">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M6 12h12M9 18h6"/>
-                    </svg>
+                     <img src="{{ asset('assets/images/search-line.svg') }}" alt="search" class="w-3.5 h-3.5 text-gray-400 flex-shrink-0">
                 </button>
             </div>
         </div>
 
         {{-- Add Patients button: outlined, rounded, tight spacing --}}
         <div class="ml-2 md:ml-3 hidden sm:block">
-            <button class="flex items-center gap-1.5 border border-gray-300 rounded-full px-2 md:px-3 py-1.5 text-xs md:text-sm text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+            <a href="https://dental.stgserver.co.in/patients/add-patient" class="flex items-center gap-1.5 border border-gray-300 rounded-full px-2 md:px-3 py-1.5 text-xs md:text-sm text-gray-700 font-medium hover:bg-gray-50 transition-colors">
                 <span class="hidden md:inline">Add Patients</span>
                 <span class="md:hidden">Add</span>
                 <span class="text-gray-500 font-medium">+</span>
-            </button>
+            </a>
         </div>
 
         {{-- Spacer --}}

@@ -46,49 +46,56 @@
 </div>
 
 <!-- Document Type Modal -->
-<div id="docTypeModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-opacity-50" onclick="closeModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
+<div id="docTypeModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black/50">
+    <div class="relative p-4 w-full max-w-lg">
+        <div class="relative bg-white border border-gray-200 rounded-xl shadow-lg p-6">
             <!-- Modal Header -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h2 id="modalTitle" class="text-lg font-semibold text-gray-800">Add Document Type</h2>
-                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                <h3 class="text-lg font-semibold text-gray-800" id="modalTitle">Add Document Type</h3>
+                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg w-9 h-9 inline-flex justify-center items-center transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
+                    <span class="sr-only">Close modal</span>
                 </button>
             </div>
 
             <!-- Modal Body -->
-            <form id="docTypeForm" class="px-6 py-4">
+            <form id="docTypeForm">
                 @csrf
                 <input type="hidden" id="editDocTypeId" value="">
 
-                <div class="space-y-4">
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Name -->
                     <div>
-                        <label for="Title" class="block text-sm font-medium text-gray-700 mb-1">Name <sup class="star">*</sup></label>
+                        <label for="Title" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Name <span class="text-red-500">*</span>
+                        </label>
                         <input type="text" id="Title" name="Title"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                               placeholder="Enter document type name" required>
+                               placeholder="Enter document type name"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" required />
                     </div>
+
+                    <!-- Description -->
                     <div>
-                        <label for="Description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <input type="text" id="Description" name="Description"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                               placeholder="Enter description">
+                        <label for="Description" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Description
+                        </label>
+                        <textarea id="Description" name="Description" rows="3"
+                                  placeholder="Enter description"
+                                  class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"></textarea>
                     </div>
                 </div>
 
                 <!-- Modal Footer -->
                 <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
-                    <button type="submit"
-                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm">
-                        Save
-                    </button>
                     <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
+                            class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors">
+                        <i class="fas fa-save mr-1"></i> Save Document Type
                     </button>
                 </div>
             </form>
@@ -186,17 +193,51 @@ $(document).ready(function() {
     });
 });
 
+    // Add validation styles
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(
+            'label.error {' +
+                'color: #dc3545 !important;' +
+                'font-size: 0.875rem !important;' +
+                'margin-top: 0.25rem !important;' +
+                'display: block !important;' +
+            '}' +
+            'input.error, select.error, textarea.error {' +
+                'border-color: #dc3545 !important;' +
+                'box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;' +
+            '}' +
+        ''
+        )
+        .appendTo('head');
+
+    // Initialize validation
+    $("#docTypeForm").validate({
+        ignore: [],
+        rules: {
+            Title: { required: true }
+        },
+        messages: {
+            Title: { required: "Please enter document type name" }
+        },
+        submitHandler: function(form) {
+            return false;
+        }
+    });
+
+// Modal functions
 function openAddModal() {
     $('#modalTitle').text('Add Document Type');
     $('#editDocTypeId').val('');
     $('#docTypeForm')[0].reset();
-    $('#docTypeModal').removeClass('hidden');
+    $('#docTypeModal').removeClass('hidden').addClass('flex');
 }
 
 function closeModal() {
-    $('#docTypeModal').addClass('hidden');
+    $('#docTypeModal').addClass('hidden').removeClass('flex');
     $('#docTypeForm')[0].reset();
     $('#editDocTypeId').val('');
+    $('#docTypeForm').data('validator').resetForm();
 }
 
 function editDocType(id) {
@@ -208,7 +249,7 @@ function editDocType(id) {
             $('#editDocTypeId').val(data.FolderId);
             $('#Title').val(data.Title);
             $('#Description').val(data.Description);
-            $('#docTypeModal').removeClass('hidden');
+           $('#docTypeModal').removeClass('hidden').addClass('flex');
         },
         error: function() {
             Swal.fire('Error!', 'Failed to load document type details.', 'error');
@@ -218,46 +259,47 @@ function editDocType(id) {
 
 $('#docTypeForm').on('submit', function(e) {
     e.preventDefault();
+    if ($(this).valid()) {
+        var docTypeId = $('#editDocTypeId').val();
+        var isEdit = docTypeId !== '';
+        var url = isEdit
+            ? '{{ route("admin.doc-types.update", ":id") }}'.replace(':id', docTypeId)
+            : '{{ route("admin.doc-types.store") }}';
 
-    var docTypeId = $('#editDocTypeId').val();
-    var isEdit = docTypeId !== '';
-    var url = isEdit
-        ? '{{ route("admin.doc-types.update", ":id") }}'.replace(':id', docTypeId)
-        : '{{ route("admin.doc-types.store") }}';
+        var formData = {
+            _token: '{{ csrf_token() }}',
+            Title: $('#Title').val(),
+            Description: $('#Description').val()
+        };
 
-    var formData = {
-        _token: '{{ csrf_token() }}',
-        Title: $('#Title').val(),
-        Description: $('#Description').val()
-    };
-
-    if (isEdit) {
-        formData._method = 'PUT';
-    }
-
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: formData,
-        success: function(res) {
-            if (res.success) {
-                closeModal();
-                Swal.fire('Success!', res.message, 'success').then(() => {
-                    $('#doc-type-table').DataTable().ajax.reload();
-                });
-            } else {
-                Swal.fire('Error!', res.message || 'An error occurred.', 'error');
-            }
-        },
-        error: function(xhr) {
-            let errorMessage = 'An error occurred.';
-            if (xhr.responseJSON) {
-                if (xhr.responseJSON.message) errorMessage = xhr.responseJSON.message;
-                if (xhr.responseJSON.errors) errorMessage = Object.values(xhr.responseJSON.errors).flat().join('<br>');
-            }
-            Swal.fire('Error!', errorMessage, 'error');
+        if (isEdit) {
+            formData._method = 'PUT';
         }
-    });
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(res) {
+                if (res.success) {
+                    closeModal();
+                    Swal.fire('Success!', res.message, 'success').then(() => {
+                        $('#doc-type-table').DataTable().ajax.reload();
+                    });
+                } else {
+                    Swal.fire('Error!', res.message || 'An error occurred.', 'error');
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'An error occurred.';
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.message) errorMessage = xhr.responseJSON.message;
+                    if (xhr.responseJSON.errors) errorMessage = Object.values(xhr.responseJSON.errors).flat().join('<br>');
+                }
+                Swal.fire('Error!', errorMessage, 'error');
+            }
+        });
+    }
 });
 
 function deleteDocType(id) {

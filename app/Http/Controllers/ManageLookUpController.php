@@ -107,13 +107,10 @@ class ManageLookUpController extends Controller
     {
         $lookup = LookUp::findOrFail($id);
 
-        $categories = LookUpsMaster::where('IsDeleted', false)
-            ->orderBy('ItemCategory')
-            ->pluck('ItemCategory')
-            ->unique()
-            ->values();
 
-        return view('admin.lookups.edit', compact('lookup', 'categories'));
+        return response()->json([
+            'data' => $lookup
+        ]);
     }
 
     public function update(Request $request, $id)

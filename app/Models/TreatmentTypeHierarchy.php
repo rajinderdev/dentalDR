@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
 class TreatmentTypeHierarchy extends Model
 {
 	protected $table = 'TreatmentTypeHierarchy';
+	protected $primaryKey = 'TreatmentTypeID';
 	public $incrementing = false;
 	public $timestamps = false;
 
@@ -58,6 +59,7 @@ class TreatmentTypeHierarchy extends Model
 		'rowguid',
 		'GeneralTreatmentCost',
 		'SpecialistTreatmentCost',
+		'DoctorIncentiveAmount',
 		'TreatmentSpecialityTypeID'
 	];
 }

@@ -6,11 +6,8 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Treatment Hierarchy</h1>
         <div class="flex gap-2">
-            <button type="button" onclick="openAddFromMasterModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+            <button type="button" onclick="openCreateModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
                 Add Treatment Type
-            </button>
-            <button type="button" onclick="openCreateModal()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
-                Create Treatment Type
             </button>
             <button type="button" onclick="bulkDeleteTreatments()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">
                 Delete Treatment Type
@@ -39,8 +36,10 @@
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Treatment Type</th>
                     <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">General Treatment Cost</th>
                     <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Specialist Treatment Cost</th>
+                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Doctor Incentive</th>
                     <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Steps Count</th>
-                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Add Step</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Created On</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,50 +49,100 @@
 </div>
 
 <!-- Create/Edit Treatment Modal -->
-<div id="treatmentModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-black bg-opacity-30" onclick="closeModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h2 id="modalTitle" class="text-lg font-semibold text-gray-800">Create Treatment Type</h2>
-                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+<div id="treatmentModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black/50">
+    <div class="relative p-4 w-full max-w-lg">
+        <div class="relative bg-white border border-gray-200 rounded-xl shadow-lg p-6">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                <h3 class="text-lg font-semibold text-gray-800" id="modalTitle">Add Treatment Type</h3>
+                <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg w-9 h-9 inline-flex justify-center items-center transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
+                    <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <form id="treatmentForm" class="px-6 py-4">
+
+            <!-- Modal Body -->
+            <form id="treatmentForm">
                 @csrf
                 <input type="hidden" id="editTreatmentId" value="">
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4">
-                        <label for="Title" class="w-40 text-sm font-medium text-gray-700 text-right">Treatment Name<sup class="text-red-500">*</sup></label>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Parent Treatment Type -->
+                    <div>
+                        <label for="ParentTreatmentTypeID" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Parent Treatment Type
+                        </label>
+                        <select id="ParentTreatmentTypeID" name="ParentTreatmentTypeID"
+                                class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="00000000-0000-0000-0000-000000000000"> Select Parent Treatment Type</option>
+                            @foreach ($treatmentTypes as $treatmentType)
+                                <option value="{{ $treatmentType->TreatmentTypeID }}">{{ $treatmentType->Title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Treatment Name -->
+                    <div>
+                        <label for="Title" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Treatment Name <span class="text-red-500">*</span>
+                        </label>
                         <input type="text" id="Title" name="Title"
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                               placeholder="Enter treatment name" required>
+                               placeholder="Enter treatment name"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" required />
                     </div>
-                    <div class="flex items-center gap-4">
-                        <label for="Description" class="w-40 text-sm font-medium text-gray-700 text-right">Description</label>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="Description" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Description
+                        </label>
                         <textarea id="Description" name="Description" rows="3"
-                                  class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                  placeholder="Enter description"></textarea>
+                                  placeholder="Enter description"
+                                  class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"></textarea>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <label for="GeneralTreatmentCost" class="w-40 text-sm font-medium text-gray-700 text-right">General Cost</label>
-                        <input type="number" id="GeneralTreatmentCost" name="GeneralTreatmentCost" step="0.01" min="0"
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                               placeholder="0.00" value="0">
+
+                    <!-- General Cost -->
+                    <div>
+                        <label for="GeneralTreatmentCost" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            General Cost
+                        </label>
+                        <input type="number" id="GeneralTreatmentCost" name="GeneralTreatmentCost" step="0.01" min="0" value="0"
+                               placeholder="0.00"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
                     </div>
-                    <div class="flex items-center gap-4">
-                        <label for="SpecialistTreatmentCost" class="w-40 text-sm font-medium text-gray-700 text-right">Specialist Cost</label>
-                        <input type="number" id="SpecialistTreatmentCost" name="SpecialistTreatmentCost" step="0.01" min="0"
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                               placeholder="0.00" value="0">
+
+                    <!-- Specialist Cost -->
+                    <div>
+                        <label for="SpecialistTreatmentCost" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Specialist Cost
+                        </label>
+                        <input type="number" id="SpecialistTreatmentCost" name="SpecialistTreatmentCost" step="0.01" min="0" value="0"
+                               placeholder="0.00"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                    </div>
+                    <!-- Doctor Incentive Amount -->
+                    <div>
+                        <label for="DoctorIncentiveAmount" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Doctor Incentive Amount
+                        </label>
+                        <input type="number" id="DoctorIncentiveAmount" name="DoctorIncentiveAmount" step="0.01" min="0" value="0"
+                               placeholder="0.00"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
                     </div>
                 </div>
-                <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-200">
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">Save</button>
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">Cancel</button>
+
+                <!-- Modal Footer -->
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="closeModal()"
+                            class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors">
+                        <i class="fas fa-save mr-1"></i> Save Treatment Type
+                    </button>
                 </div>
             </form>
         </div>
@@ -101,87 +150,112 @@
 </div>
 
 <!-- Steps Modal (View/Add Steps for a Treatment) -->
-<div id="stepsModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-black bg-opacity-30" onclick="closeStepsModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl relative">
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h2 id="stepsModalTitle" class="text-lg font-semibold text-gray-800">Treatment Hierarchy</h2>
-                <button type="button" onclick="closeStepsModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+<div id="stepsModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black/50">
+    <div class="relative p-4 w-full max-w-6xl">
+        <div class="relative bg-white border border-gray-200 rounded-xl shadow-lg p-6">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                <h3 class="text-lg font-semibold text-gray-800" id="stepsModalTitle">Treatment Hierarchy</h3>
+                <button type="button" onclick="closeStepsModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg w-9 h-9 inline-flex justify-center items-center transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
+                    <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <div class="px-6 py-4">
-                <div class="mb-4">
-                    <label class="text-sm font-medium text-gray-700">Parent Treatment Type</label>
-                    <div id="parentTreatmentName" class="px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium text-gray-800 mt-1"></div>
-                    <input type="hidden" id="parentTreatmentId" value="">
+            <form id="stepsForm">
+                @csrf
+                <!-- Modal Body -->
+                <div class="px-6 py-4">
+                    <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700 mb-1 block">Parent Treatment Type</label>
+                        <div id="parentTreatmentName" class="px-3 py-2.5 bg-gray-100 rounded-lg text-sm font-medium text-gray-800 mt-1"></div>
+                        <input type="hidden" id="parentTreatmentId3" name="parentTreatmentId" value="">
+                    </div>
+
+                    <!-- Existing Steps List -->
+                    <div class="mb-4">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Current Steps</h3>
+                        <div id="stepsList" class="border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
+                            <div class="p-3 text-sm text-gray-500 text-center">Loading...</div>
+                        </div>
+                    </div>
+
+                    <!-- Add Step Section -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Treatment Name -->
+                            <div>
+                                <label for="Title" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                    Treatment Name <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="Title1" name="Title"
+                                    placeholder="Enter treatment name"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" required />
+                            </div>
+
+
+                            <!-- General Cost -->
+                            <div>
+                                <label for="GeneralTreatmentCost" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                    General Cost
+                                </label>
+                                <input type="number" id="GeneralTreatmentCost2" name="GeneralTreatmentCost" step="0.01" min="0" value="0"
+                                    placeholder="0.00"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                            </div>
+
+                            <!-- Specialist Cost -->
+                            <div>
+                                <label for="SpecialistTreatmentCost" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                    Specialist Cost
+                                </label>
+                                <input type="number" id="SpecialistTreatmentCost3" name="SpecialistTreatmentCost" step="0.01" min="0" value="0"
+                                    placeholder="0.00"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                            </div>
+
+                            <!-- Doctor Incentive Amount -->
+                            <div>
+                                <label for="DoctorIncentiveAmount" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                    Doctor Incentive Amount
+                                </label>
+                                <input type="number" id="DoctorIncentiveAmount4" name="DoctorIncentiveAmount" step="0.01" min="0" value="0"
+                                    placeholder="0.00"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                            </div>
+                            
+                            <!-- Description -->
+                            <div>
+                                <label for="Description" class="block mb-1.5 text-sm font-medium text-gray-700">
+                                    Description
+                                </label>
+                                <textarea id="Description5" name="Description" rows="3"
+                                        placeholder="Enter description"
+                                        class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Existing Steps List -->
-                <div class="mb-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Current Steps</h3>
-                    <div id="stepsList" class="border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
-                        <div class="p-3 text-sm text-gray-500 text-center">Loading...</div>
-                    </div>
+                <!-- Modal Footer -->
+            
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="closeStepsModal()"
+                            class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors">
+                        <i class="fas fa-save mr-1"></i> Save Treatment Type
+                    </button>
                 </div>
-
-                <!-- Add Step Section -->
-                <div class="border-t border-gray-200 pt-4">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Add New Step</h3>
-                    <div class="mb-3">
-                        <label class="text-sm text-gray-600 mb-1 block">Search Master Treatments</label>
-                        <input type="text" id="masterSearchInput" placeholder="Type to search treatment names..."
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                    </div>
-                    <div id="masterTreatmentsList" class="border border-gray-200 rounded-lg max-h-40 overflow-y-auto hidden">
-                    </div>
-                    <div class="mt-3 text-center text-xs text-gray-400">- or add custom step -</div>
-                    <div class="mt-3 flex gap-2">
-                        <input type="text" id="customStepName" placeholder="Custom step name"
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <button type="button" onclick="addCustomStep()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">Add</button>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end px-6 py-3 border-t border-gray-200">
-                <button type="button" onclick="closeStepsModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">Close</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
 
-<!-- Add From Master Modal -->
-<div id="addFromMasterTopModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-black bg-opacity-30" onclick="closeAddFromMasterModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800">Add Treatment Type</h2>
-                <button type="button" onclick="closeAddFromMasterModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="px-6 py-4">
-                <div class="mb-3">
-                    <label class="text-sm font-medium text-gray-700 mb-1 block">Search Treatment Name</label>
-                    <input type="text" id="topMasterSearchInput" placeholder="Type to search..."
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                </div>
-                <div id="topMasterTreatmentsList" class="border border-gray-200 rounded-lg max-h-64 overflow-y-auto">
-                    <div class="p-3 text-sm text-gray-500 text-center">Type to search master treatments...</div>
-                </div>
-            </div>
-            <div class="flex justify-end gap-3 px-6 py-3 border-t border-gray-200">
-                <button type="button" onclick="closeAddFromMasterModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection
 
 @section('page_js')
@@ -228,9 +302,24 @@ $(document).ready(function() {
                 }
             },
             {
+                data: 'DoctorIncentiveAmount',
+                name: 'DoctorIncentiveAmount',
+                orderable: true,
+                className: 'text-right',
+                render: function(data) {
+                    return 'INR ' + data;
+                }
+            },
+            {
                 data: 'StepsCount',
                 name: 'StepsCount',
                 orderable: false,
+                className: 'text-center'
+            },
+            {
+                data: 'CreatedOn',
+                name: 'CreatedOn',
+                orderable: true,
                 className: 'text-center'
             },
             {
@@ -241,7 +330,7 @@ $(document).ready(function() {
                 className: 'text-center'
             },
         ],
-        order: [[1, 'asc']],
+        order: [[6, 'DESC']],
         pageLength: 10,
         lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
         language: {
@@ -266,7 +355,29 @@ $(document).ready(function() {
     });
 
     // Form validation
+     $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            label.error {
+                color: #dc3545 !important;
+                font-size: 0.875rem !important;
+                margin-top: 0.25rem !important;
+                display: block !important;
+            }
+            input.error, select.error {
+                border-color: #dc3545 !important;
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+            }
+        `)
+        .appendTo('head');
+
     $("#treatmentForm").validate({
+        ignore: [],
+        rules: { Title: { required: true } },
+        messages: { Title: { required: "Please enter treatment name" } },
+        submitHandler: function(form) { return false; }
+    });
+    $("#stepsForm").validate({
         ignore: [],
         rules: { Title: { required: true } },
         messages: { Title: { required: "Please enter treatment name" } },
@@ -281,8 +392,11 @@ function openCreateModal() {
     $('#treatmentForm')[0].reset();
     $('#GeneralTreatmentCost').val(0);
     $('#SpecialistTreatmentCost').val(0);
-    $('#treatmentModal').removeClass('hidden');
+    
+    $('#treatmentModal').removeClass('hidden').addClass('flex');
 }
+
+
 
 function closeModal() {
     $('#treatmentModal').addClass('hidden');
@@ -291,6 +405,8 @@ function closeModal() {
 }
 
 function editTreatment(treatmentId) {
+    // Load parent treatment options first
+    
     $.ajax({
         url: '{{ route("admin.treatment-hierarchy.edit", ":id") }}'.replace(':id', treatmentId),
         type: 'GET',
@@ -301,7 +417,13 @@ function editTreatment(treatmentId) {
             $('#Description').val(data.Description);
             $('#GeneralTreatmentCost').val(data.GeneralTreatmentCost || 0);
             $('#SpecialistTreatmentCost').val(data.SpecialistTreatmentCost || 0);
-            $('#treatmentModal').removeClass('hidden');
+            
+            // Set parent treatment type after loading options
+            setTimeout(function() {
+                $('#ParentTreatmentTypeID').val(data.ParentTreatmentTypeID || '');
+            }, 100);
+            
+            $('#treatmentModal').removeClass('hidden').addClass('flex');
         },
         error: function() {
             Swal.fire('Error!', 'Failed to load treatment details.', 'error');
@@ -323,8 +445,10 @@ $('#treatmentForm').on('submit', function(e) {
         _token: '{{ csrf_token() }}',
         Title: $('#Title').val(),
         Description: $('#Description').val(),
+        ParentTreatmentTypeID: $('#ParentTreatmentTypeID').val() || '00000000-0000-0000-0000-000000000000',
         GeneralTreatmentCost: $('#GeneralTreatmentCost').val(),
-        SpecialistTreatmentCost: $('#SpecialistTreatmentCost').val()
+        SpecialistTreatmentCost: $('#SpecialistTreatmentCost').val(),
+        DoctorIncentiveAmount: $('#DoctorIncentiveAmount').val()
     };
     if (isEdit) formData._method = 'PUT';
 
@@ -335,6 +459,51 @@ $('#treatmentForm').on('submit', function(e) {
         success: function(res) {
             if (res.success) {
                 closeModal();
+                Swal.fire('Success!', res.message, 'success').then(function() {
+                    treatmentTable.ajax.reload();
+                });
+            } else {
+                Swal.fire('Error!', res.message || 'An error occurred.', 'error');
+            }
+        },
+        error: function(xhr) {
+            var msg = 'An error occurred.';
+            if (xhr.responseJSON) {
+                if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                if (xhr.responseJSON.errors) msg = Object.values(xhr.responseJSON.errors).flat().join('<br>');
+            }
+            Swal.fire('Error!', msg, 'error');
+        }
+    });
+});
+$('#stepsForm').on('submit', function(e) {
+    e.preventDefault();
+    if (!$('#stepsForm').valid()) return;
+
+    var treatmentId = $('#editTreatmentId').val();
+    var isEdit = treatmentId !== '';
+    var url = isEdit
+        ? '{{ route("admin.treatment-hierarchy.update", ":id") }}'.replace(':id', treatmentId)
+        : '{{ route("admin.treatment-hierarchy.store") }}';
+
+    var formData = {
+        _token: '{{ csrf_token() }}',
+        Title: $('#Title1').val(),
+        Description: $('#Description5').val(),
+        ParentTreatmentTypeID: $('#parentTreatmentId3').val() || '00000000-0000-0000-0000-000000000000',
+        GeneralTreatmentCost: $('#GeneralTreatmentCost2').val(),
+        SpecialistTreatmentCost: $('#SpecialistTreatmentCost3').val(),
+        DoctorIncentiveAmount: $('#DoctorIncentiveAmount4').val()
+    };
+    if (isEdit) formData._method = 'PUT';
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        success: function(res) {
+            if (res.success) {
+                closeStepsModal();
                 Swal.fire('Success!', res.message, 'success').then(function() {
                     treatmentTable.ajax.reload();
                 });
@@ -429,7 +598,7 @@ function bulkDeleteTreatments() {
 
 // ========== Steps Modal ==========
 function viewSteps(treatmentId, treatmentTitle) {
-    $('#parentTreatmentId').val(treatmentId);
+    $('#parentTreatmentId3').val(treatmentId);
     $('#parentTreatmentName').text(treatmentTitle);
     $('#stepsModalTitle').text('Treatment Hierarchy');
     $('#customStepName').val('');
@@ -454,13 +623,26 @@ function loadSteps(treatmentId) {
                 $('#stepsList').html('<div class="p-3 text-sm text-gray-500 text-center">No steps added yet</div>');
                 return;
             }
-            var html = '<table class="min-w-full"><thead><tr class="bg-gray-50"><th class="px-3 py-2 text-left text-xs font-semibold text-gray-600">Step Name</th><th class="px-3 py-2 text-right text-xs font-semibold text-gray-600 w-20">Action</th></tr></thead><tbody>';
-            steps.forEach(function(step) {
+            var html = `<div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200"> <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Sr No.</th>
+                          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Treatment Type</th>
+                            <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">General Treatment Cost</th>
+                            <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Specialist Treatment Cost</th>
+                            <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Doctor Incentive</th>
+                            <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700 w-20">Action</th></tr></thead><tbody>`;
+            steps.forEach(function(step, index) {
                 html += '<tr class="border-b border-gray-100 hover:bg-gray-50">';
-                html += '<td class="px-3 py-2 text-sm text-gray-700">' + $('<div>').text(step.Title).html() + '</td>';
-                html += '<td class="px-3 py-2 text-right"><button type="button" onclick="removeStep(\'' + step.TreatmentTypeID + '\')" class="text-red-600 hover:text-red-800 text-xs font-medium">Remove</button></td>';
+                html += '<td class="px-4 py-3 text-sm text-gray-700">' + (index + 1) + '</td>';
+                html += '<td class="px-4 py-3 text-sm text-gray-700">' + $('<div>').text(step.Title).html() + '</td>';
+                html += '<td class="px-4 py-3 text-right text-sm text-gray-700">' + (step.GeneralTreatmentCost ? 'INR ' + parseFloat(step.GeneralTreatmentCost).toFixed(2) : 'INR 0.00') + '</td>';
+                html += '<td class="px-4 py-3 text-right text-sm text-gray-700">' + (step.SpecialistTreatmentCost ? 'INR ' + parseFloat(step.SpecialistTreatmentCost).toFixed(2) : 'INR 0.00') + '</td>';
+                html += '<td class="px-4 py-3 text-right text-sm text-gray-700">' + (step.DoctorIncentiveAmount ? 'INR ' + parseFloat(step.DoctorIncentiveAmount).toFixed(2) : 'INR 0.00') + '</td>';
+                html += '<td class="px-4 py-3 text-right"><button type="button" onclick="removeStep(\'' + step.TreatmentTypeID + '\')" class="text-red-600 hover:text-red-800 text-xs font-medium px-2 py-1 rounded"><i class="fas fa-trash"></i></button></td>';
                 html += '</tr>';
             });
+            html += '</tbody></table></div>';
             html += '</tbody></table>';
             $('#stepsList').html(html);
         },

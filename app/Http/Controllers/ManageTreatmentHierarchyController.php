@@ -26,10 +26,9 @@ class ManageTreatmentHierarchyController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $clinicId = $this->getClinicId();
 
-            $query = TreatmentTypeHierarchy::where('ClinicID', $clinicId)
-                ->where(function ($q) {
+            $query = TreatmentTypeHierarchy::
+                where(function ($q) {
                     $q->where('IsDeleted', false)->orWhereNull('IsDeleted');
                 })
                 ->where(function ($q) {
@@ -43,6 +42,7 @@ class ManageTreatmentHierarchyController extends Controller
                     'Description',
                     'GeneralTreatmentCost',
                     'SpecialistTreatmentCost',
+                    'DoctorIncentiveAmount',
                     'CreatedOn',
                 ]);
 
@@ -57,8 +57,8 @@ class ManageTreatmentHierarchyController extends Controller
                     }
                 })
                 ->addColumn('StepsCount', function ($row) {
-                    return TreatmentTypeHierarchy::where('ClinicID', $row->ClinicID)
-                        ->where('ParentTreatmentTypeID', $row->TreatmentTypeID)
+                    return TreatmentTypeHierarchy::
+                        where('ParentTreatmentTypeID', $row->TreatmentTypeID)
                         ->where(function ($q) {
                             $q->where('IsDeleted', false)->orWhereNull('IsDeleted');
                         })
@@ -70,14 +70,37 @@ class ManageTreatmentHierarchyController extends Controller
                 ->editColumn('SpecialistTreatmentCost', function ($row) {
                     return $row->SpecialistTreatmentCost ? number_format($row->SpecialistTreatmentCost, 2) : '0.00';
                 })
+                ->editColumn('DoctorIncentiveAmount', function ($row) {
+                    return $row->DoctorIncentiveAmount ? number_format($row->DoctorIncentiveAmount, 2) : '0.00';
+                })
+                ->editColumn('CreatedOn', function ($row) {
+                     return $row->CreatedOn ? $row->CreatedOn->format('M d, Y') : 'N/A';
+                })
                 ->addColumn('action', function ($row) {
                     return view('admin.treatment-hierarchy.actions', ['treatment' => $row])->render();
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-        return view('admin.treatment-hierarchy.index');
+        $treatmentTypes = TreatmentTypeHierarchy::
+                where(function ($q) {
+                    $q->where('IsDeleted', false)->orWhereNull('IsDeleted');
+                })
+                ->where(function ($q) {
+                    $q->where('ParentTreatmentTypeID', '00000000-0000-0000-0000-000000000000')
+                      ->orWhereNull('ParentTreatmentTypeID');
+                })
+                ->select([
+                    'TreatmentTypeID',
+                    'ClinicID',
+                    'Title',
+                    'Description',
+                    'GeneralTreatmentCost',
+                    'SpecialistTreatmentCost',
+                    'DoctorIncentiveAmount',
+                    'CreatedOn',
+                ])->orderBy('CreatedOn', 'desc')->get();
+        return view('admin.treatment-hierarchy.index', compact('treatmentTypes'));
     }
 
     public function store(Request $request)
@@ -87,7 +110,8 @@ class ManageTreatmentHierarchyController extends Controller
             'Description' => 'nullable|string|max:500',
             'GeneralTreatmentCost' => 'nullable|numeric|min:0',
             'SpecialistTreatmentCost' => 'nullable|numeric|min:0',
-        ]);
+            'DoctorIncentiveAmount' => 'nullable|numeric|min:0',
+            ]);
 
         try {
             $clinicId = $this->getClinicId();
@@ -98,9 +122,10 @@ class ManageTreatmentHierarchyController extends Controller
                 'ClinicID' => $clinicId,
                 'Title' => $request->Title,
                 'Description' => $request->Description,
-                'ParentTreatmentTypeID' => '00000000-0000-0000-0000-000000000000',
+                'ParentTreatmentTypeID' => $request->ParentTreatmentTypeID ?? '00000000-0000-0000-0000-000000000000',
                 'GeneralTreatmentCost' => $request->GeneralTreatmentCost ?? 0,
                 'SpecialistTreatmentCost' => $request->SpecialistTreatmentCost ?? 0,
+                'DoctorIncentiveAmount' => $request->DoctorIncentiveAmount ?? 0,
                 'TreatmentSpecialityTypeID' => 1,
                 'IsDeleted' => false,
                 'CreatedOn' => now(),
@@ -127,7 +152,6 @@ class ManageTreatmentHierarchyController extends Controller
     {
         $clinicId = $this->getClinicId();
         $treatment = TreatmentTypeHierarchy::where('TreatmentTypeID', $id)
-            ->where('ClinicID', $clinicId)
             ->firstOrFail();
 
         return response()->json($treatment);
@@ -140,6 +164,7 @@ class ManageTreatmentHierarchyController extends Controller
             'Description' => 'nullable|string|max:500',
             'GeneralTreatmentCost' => 'nullable|numeric|min:0',
             'SpecialistTreatmentCost' => 'nullable|numeric|min:0',
+            'DoctorIncentiveAmount' => 'nullable|numeric|min:0',
         ]);
 
         try {
@@ -147,7 +172,6 @@ class ManageTreatmentHierarchyController extends Controller
             $userId = $this->getUserId();
 
             $treatment = TreatmentTypeHierarchy::where('TreatmentTypeID', $id)
-                ->where('ClinicID', $clinicId)
                 ->firstOrFail();
 
             $treatment->update([
@@ -155,6 +179,7 @@ class ManageTreatmentHierarchyController extends Controller
                 'Description' => $request->Description,
                 'GeneralTreatmentCost' => $request->GeneralTreatmentCost ?? 0,
                 'SpecialistTreatmentCost' => $request->SpecialistTreatmentCost ?? 0,
+                'DoctorIncentiveAmount' => $request->DoctorIncentiveAmount ?? 0,
                 'LastUpdatedOn' => now(),
                 'LastUpdatedBy' => $userId,
             ]);
@@ -258,13 +283,13 @@ class ManageTreatmentHierarchyController extends Controller
     {
         $clinicId = $this->getClinicId();
 
-        $steps = TreatmentTypeHierarchy::where('ClinicID', $clinicId)
-            ->where('ParentTreatmentTypeID', $id)
+        $steps = TreatmentTypeHierarchy::
+            where('ParentTreatmentTypeID', $id)
             ->where(function ($q) {
                 $q->where('IsDeleted', false)->orWhereNull('IsDeleted');
             })
-            ->orderBy('Title')
-            ->get(['TreatmentTypeID', 'Title', 'Description', 'GeneralTreatmentCost', 'SpecialistTreatmentCost']);
+            ->orderBy('CreatedOn', 'desc')
+            ->get(['TreatmentTypeID', 'Title', 'Description', 'GeneralTreatmentCost', 'SpecialistTreatmentCost','DoctorIncentiveAmount','CreatedOn']);
 
         return response()->json($steps);
     }
@@ -314,11 +339,9 @@ class ManageTreatmentHierarchyController extends Controller
     public function removeStep($id)
     {
         try {
-            $clinicId = $this->getClinicId();
             $userId = $this->getUserId();
 
             TreatmentTypeHierarchy::where('TreatmentTypeID', $id)
-                ->where('ClinicID', $clinicId)
                 ->update([
                     'IsDeleted' => true,
                     'LastUpdatedBy' => $userId,

@@ -7,9 +7,9 @@
         <h1 class="text-2xl font-bold text-gray-800">Manage Lab Items</h1>
         <div class="flex gap-2">
             
-                <a href="{{ route('admin.lab-items.create') }}" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <button type="button" onclick="openAddLabItemModal()" id="addNewItemBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                     <i class="fas fa-plus mr-1"></i> Add New Lab Item
-                </a>
+                </button>
                 <button type="button" id="deleteSelectedBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" disabled>
                     <i class="fas fa-trash mr-1"></i> Delete Lab Item
                 </button>
@@ -51,6 +51,88 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Lab Item Modal -->
+<div id="labItemModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black/50">
+    <div class="relative p-4 w-full max-w-lg">
+        <div class="relative bg-white border border-gray-200 rounded-xl shadow-lg p-6">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                <h3 class="text-lg font-semibold text-gray-800" id="modalTitle">Add Lab Item</h3>
+                <button type="button" onclick="closeLabItemModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg w-9 h-9 inline-flex justify-center items-center transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <form id="labItemForm">
+                @csrf
+                <input type="hidden" id="editLabItemId" value="">
+
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Component Category -->
+                    <div>
+                        <label for="ComponentCategoryID" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Component Category <span class="text-red-500">*</span>
+                        </label>
+                        <select id="ComponentCategoryID" name="ComponentCategoryID"
+                                class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            <option value="">Select Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->ItemTitle }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Component Name -->
+                    <div>
+                        <label for="ComponentName" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Component Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="ComponentName" name="ComponentName"
+                               placeholder="Enter component name"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" required />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="ComponentDescription" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Description
+                        </label>
+                        <textarea id="ComponentDescription" name="ComponentDescription" rows="3"
+                                  placeholder="Enter description"
+                                  class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"></textarea>
+                    </div>
+
+                    <!-- Lab Work Cost -->
+                    <div>
+                        <label for="LabWorkCost" class="block mb-1.5 text-sm font-medium text-gray-700">
+                            Lab Work Cost
+                        </label>
+                        <input type="number" id="LabWorkCost" name="LabWorkCost" step="0.01" min="0" value="0"
+                               placeholder="0.00"
+                               class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400" />
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="closeLabItemModal()"
+                            class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors">
+                        <i class="fas fa-save mr-1"></i> Save Lab Item
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
@@ -117,7 +199,7 @@ $(document).ready(function() {
                 name: 'action',
                 orderable: false,
                 searchable: false,
-                className: 'text-right'
+                className: 'text-right',
             },
         ],
         order: [[5, 'desc']],
@@ -218,6 +300,128 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Add validation styles
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(
+            'label.error {' +
+                'color: #dc3545 !important;' +
+                'font-size: 0.875rem !important;' +
+                'margin-top: 0.25rem !important;' +
+                'display: block !important;' +
+            '}' +
+            'input.error, select.error, textarea.error {' +
+                'border-color: #dc3545 !important;' +
+                'box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;' +
+            '}' +
+        ''
+        )
+        .appendTo('head');
+
+    // Initialize validation
+    $("#labItemForm").validate({
+        ignore: [],
+        rules: {
+            ComponentCategoryID: { required: true },
+            ComponentName: { required: true }
+        },
+        messages: {
+            ComponentCategoryID: { required: "Please select a category" },
+            ComponentName: { required: "Please enter component name" }
+        },
+        submitHandler: function(form) {
+            return false;
+        }
+    });
+});
+
+// Modal functions
+function openAddLabItemModal() {
+    $('#modalTitle').text('Add Lab Item');
+    $('#editLabItemId').val('');
+    $('#labItemForm')[0].reset();
+    $('#labItemModal').removeClass('hidden').addClass('flex');
+    
+    // Set category from filter if selected
+    var category = $('#categoryFilter').val();
+    if (category) {
+        $('#ComponentCategoryID').val(category);
+    }
+}
+
+function closeLabItemModal() {
+    $('#labItemModal').addClass('hidden').removeClass('flex');
+    $('#labItemForm')[0].reset();
+    $('#editLabItemId').val('');
+    $('#labItemForm').data('validator').resetForm();
+}
+
+function editLabItem(itemId) {
+    $.ajax({
+        url: '{{ route("admin.lab-items.edit", ":id") }}'.replace(':id', itemId),
+        type: 'GET',
+        success: function(data) {
+            $('#modalTitle').text('Edit Lab Item');
+            $('#editLabItemId').val(data.id);
+            $('#ComponentCategoryID').val(data.ComponentCategoryID);
+            $('#ComponentName').val(data.ComponentName);
+            $('#ComponentDescription').val(data.ComponentDescription);
+            $('#LabWorkCost').val(data.LabWorkCost);
+            $('#labItemModal').removeClass('hidden').addClass('flex');
+        },
+        error: function() {
+            Swal.fire('Error!', 'Failed to load lab item details.', 'error');
+        }
+    });
+}
+
+// Form submission
+$('#labItemForm').on('submit', function(e) {
+    e.preventDefault();
+    if ($(this).valid()) {
+        var labItemId = $('#editLabItemId').val();
+        var url = labItemId ? 
+            '{{ route("admin.lab-items.update", ":id") }}'.replace(':id', labItemId) : 
+            '{{ route("admin.lab-items.store") }}';
+        
+        var formData = new FormData(this);
+        if (labItemId) {
+            formData.append('_method', 'PUT');
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire('Success!', response.message, 'success').then(() => {
+                        closeLabItemModal();
+                        $('#lab-items-table').DataTable().ajax.reload();
+                    });
+                } else {
+                    Swal.fire('Error!', response.message || 'An error occurred.', 'error');
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'An error occurred while saving lab item.';
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    if (xhr.responseJSON.errors) {
+                        var errors = xhr.responseJSON.errors;
+                        errorMessage = Object.values(errors).flat().join('<br>');
+                    }
+                }
+                Swal.fire('Error!', errorMessage, 'error');
+            }
+        });
+    }
 });
 
 function deleteLabItem(itemId) {

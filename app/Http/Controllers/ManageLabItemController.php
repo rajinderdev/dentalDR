@@ -116,8 +116,7 @@ class ManageLabItemController extends Controller
     public function edit($id)
     {
         $item = ClinicLabWorkComponent::findOrFail($id);
-        $categories = $this->getCategories();
-        return view('admin.lab-items.edit', compact('item', 'categories'));
+        return response()->json($item);
     }
 
     public function update(Request $request, $id)

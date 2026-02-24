@@ -222,8 +222,10 @@
                         <a href="{{ route('admin.bank-accounts.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.bank-accounts.*') ? 'bg-blue-700' : '' }}">Manage Bank Acc</a>
                         <a href="{{ route('admin.doc-types.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.doc-types.*') ? 'bg-blue-700' : '' }}">Manage DocType</a>
                         <a href="{{ route('admin.clinic-attributes.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.clinic-attributes.*') ? 'bg-blue-700' : '' }}">Manage Clinic Attributes</a>
+                        <a href="{{ route('admin.treatment-hierarchy.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.treatment-hierarchy.*') ? 'bg-blue-700' : '' }}">Treatment Hierarchy</a>
                         <a href="{{ route('admin.communication-attributes.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.communication-attributes.*') ? 'bg-blue-700' : '' }}">Manage Communication A...</a>
                         <a href="{{ route('admin.lab-items.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.lab-items.*') ? 'bg-blue-700' : '' }}">Manage Lab Items</a>
+                        <a href="{{ route('admin.backup-database.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.backup-database.*') ? 'bg-blue-700' : '' }}">Backup Database</a>
                         <a href="{{ route('admin.user-activities.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-500 {{ request()->routeIs('admin.user-activities.*') ? 'bg-blue-700' : '' }}">Users Activities</a>
                     </div>
                 </details>

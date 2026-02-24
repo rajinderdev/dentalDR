@@ -110,6 +110,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/communication-attributes', [App\Http\Controllers\ManageCommunicationAttributeController::class, 'index'])->name('admin.communication-attributes.index');
     Route::post('/admin/communication-attributes', [App\Http\Controllers\ManageCommunicationAttributeController::class, 'update'])->name('admin.communication-attributes.update');
 
+    // Manage Treatment Hierarchy routes
+    Route::get('/admin/treatment-hierarchy', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'index'])->name('admin.treatment-hierarchy.index');
+    Route::post('/admin/treatment-hierarchy', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'store'])->name('admin.treatment-hierarchy.store');
+    Route::get('/admin/treatment-hierarchy/{id}/edit', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'edit'])->name('admin.treatment-hierarchy.edit');
+    Route::put('/admin/treatment-hierarchy/{id}', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'update'])->name('admin.treatment-hierarchy.update');
+    Route::delete('/admin/treatment-hierarchy/{id}', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'destroy'])->name('admin.treatment-hierarchy.destroy');
+    Route::post('/admin/treatment-hierarchy/bulk-delete', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'bulkDelete'])->name('admin.treatment-hierarchy.bulk-delete');
+    Route::get('/admin/treatment-hierarchy/{id}/steps', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'getSteps'])->name('admin.treatment-hierarchy.steps');
+    Route::post('/admin/treatment-hierarchy/add-step', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'addStep'])->name('admin.treatment-hierarchy.add-step');
+    Route::delete('/admin/treatment-hierarchy/remove-step/{id}', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'removeStep'])->name('admin.treatment-hierarchy.remove-step');
+    Route::get('/admin/treatment-hierarchy/search-master', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'searchMasterTreatments'])->name('admin.treatment-hierarchy.search-master');
+    Route::post('/admin/treatment-hierarchy/add-from-master', [App\Http\Controllers\ManageTreatmentHierarchyController::class, 'addFromMaster'])->name('admin.treatment-hierarchy.add-from-master');
+
     // Manage DocType routes
     Route::get('/admin/doc-types', [App\Http\Controllers\ManageDocTypeController::class, 'index'])->name('admin.doc-types.index');
     Route::post('/admin/doc-types', [App\Http\Controllers\ManageDocTypeController::class, 'store'])->name('admin.doc-types.store');
@@ -137,4 +150,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/lab-items/{id}', [App\Http\Controllers\ManageLabItemController::class, 'update'])->name('admin.lab-items.update');
     Route::delete('/admin/lab-items/{id}', [App\Http\Controllers\ManageLabItemController::class, 'destroy'])->name('admin.lab-items.destroy');
     Route::post('/admin/lab-items/bulk-delete', [App\Http\Controllers\ManageLabItemController::class, 'bulkDelete'])->name('admin.lab-items.bulk-delete');
+
+    // Backup Database routes
+    Route::get('/admin/backup-database', [App\Http\Controllers\BackupDatabaseController::class, 'index'])->name('admin.backup-database.index');
+    Route::get('/admin/backup-database/sql', [App\Http\Controllers\BackupDatabaseController::class, 'createSqlBackup'])->name('admin.backup-database.sql');
+    Route::get('/admin/backup-database/excel', [App\Http\Controllers\BackupDatabaseController::class, 'exportToExcel'])->name('admin.backup-database.excel');
 });

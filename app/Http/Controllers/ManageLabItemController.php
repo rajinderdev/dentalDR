@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClinicLabWorkComponent;
+use App\Models\LookUp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
 use Yajra\DataTables\Facades\DataTables as YajraDataTables;
 
 class ManageLabItemController extends Controller
@@ -16,34 +18,19 @@ class ManageLabItemController extends Controller
     private function getCategories()
     {
         // Get distinct categories from existing data
-        $dbCategories = ClinicLabWorkComponent::where('IsDeleted', false)
-            ->whereNotNull('ComponentCategoryID')
-            ->where('ComponentCategoryID', '!=', '')
-            ->distinct()
-            ->pluck('ComponentCategoryID')
-            ->toArray();
+        $dbCategories = LookUp::where('IsDeleted', false)
+            ->where('ItemCategory', 'LabWorkComponent')
+            ->get();
 
-        // Default dental lab categories
-        $defaultCategories = [
-            'IMPLANT CROWN/BRIDGE',
-            'TMJ APPLIANCES',
-            'ORTHO',
-            'CROWNS',
-            'BRIDGE',
-            'DENTURES',
-            'ONLAY/INLAY',
-        ];
+       
 
-        return collect(array_unique(array_merge($defaultCategories, $dbCategories)))
-            ->sort()
-            ->values();
+        return $dbCategories;
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = ClinicLabWorkComponent::where('IsDeleted', false)
-                ->where('ClinicID', Auth::user()->ClinicID);
+            $query = ClinicLabWorkComponent::where('IsDeleted', false);
 
             return YajraDataTables::of($query)
                 ->filter(function ($query) use ($request) {
@@ -61,6 +48,14 @@ class ManageLabItemController extends Controller
                 })
                 ->addColumn('action', function ($item) {
                     return view('admin.lab-items.actions', compact('item'))->render();
+                })
+                ->editColumn('ComponentCategoryID', function ($item) {
+                    $category = LookUp::where('id', $item->ComponentCategoryID)->first();
+                    return $category ? $category->ItemTitle : 'N/A';
+                })
+                ->editColumn('CreatedOn', function ($item) {
+                    
+                    return $item->CreatedOn ? $item->CreatedOn->format('M d, Y h:i A') : 'N/A';
                 })
                 ->editColumn('LabWorkCost', function ($item) {
                     if ($item->LabWorkCost === null) return 'INR 0.00';

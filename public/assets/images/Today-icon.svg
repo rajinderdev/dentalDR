@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.083" height="23.195" viewBox="0 0 20.083 23.195">
+  <g id="Today" transform="translate(-0.241 -0.25)" opacity="0.7">
+    <rect id="Rectangle_147613" data-name="Rectangle 147613" width="19.083" height="18.734" rx="3.362" transform="translate(0.741 2.016)" fill="none" stroke="#0d57ce" stroke-width="1"/>
+    <line id="Line_216" data-name="Line 216" y2="3.634" transform="translate(5.955 0.75)" fill="none" stroke="#0d57ce" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_217" data-name="Line 217" y2="3.634" transform="translate(14.611 0.792)" fill="none" stroke="#0d57ce" stroke-linecap="round" stroke-width="1"/>
+    <line id="Line_218" data-name="Line 218" x2="18.975" transform="translate(0.807 7.562)" fill="none" stroke="#0d57ce" stroke-width="1"/>
+    <path id="Path_33415" data-name="Path 33415" d="M11734.468,5104.725a.583.583,0,0,1-.418-.633c.006-3.554,0-3.163,0-6.716v-.179c-.059.057-.1.092-.135.13l-1.663,1.67a.5.5,0,0,1-.522.14.492.492,0,0,1-.359-.388.512.512,0,0,1,.161-.493l1.5-1.515q.56-.564,1.124-1.127a.523.523,0,0,1,.816,0q1.305,1.311,2.609,2.623a.52.52,0,1,1-.729.733q-.822-.825-1.643-1.651a1.24,1.24,0,0,1-.093-.109l-.035.011v.142c0,3.555,0,3.163,0,6.717a.593.593,0,0,1-.418.646Z" transform="translate(-11724.288 -5081.279)" fill="#5287dc"/>
+    <circle id="Ellipse_552" data-name="Ellipse 552" cx="1.5" cy="1.5" r="1.5" transform="translate(8.741 9.64)" fill="#5287dc"/>
+  </g>
+</svg>

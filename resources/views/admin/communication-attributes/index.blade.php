@@ -269,7 +269,10 @@
                                                value="{{ $item->AttributeValue2 ?? $item->DefaultAttributeValue2 }}"
                                                class="w-28 px-2 py-1 border border-gray-300 rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500">
                                         @else
-                                            <span class="text-gray-400">-</span>
+                                           <input type="time"
+                                               name="items[{{ $item->ClinicCommunicationMasterID }}][value2]"
+                                               value="{{ $item->AttributeValue2 ?? $item->DefaultAttributeValue2 }}"
+                                               class="w-28 px-2 py-1 border border-gray-300 rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500">
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-center">

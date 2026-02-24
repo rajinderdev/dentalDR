@@ -45,7 +45,7 @@
 
         {{-- Clear Button --}}
         <div class="pb-0">
-            <button type="button" id="clearBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm">
+            <button type="button" id="clearBtn" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
                 Clear Filters
             </button>
         </div>
@@ -56,11 +56,12 @@
         <table class="min-w-full divide-y divide-gray-200" id="activities-table">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200">
-                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Created On</th>
+                    
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Patient Name</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">UserName</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">EventTypeName</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">EventDetails</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Created On</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,12 +94,7 @@ $(document).ready(function() {
             }
         },
         columns: [
-            {
-                data: 'CreatedOn',
-                name: 'CreatedOn',
-                orderable: true,
-                width: '160px'
-            },
+           
             {
                 data: 'PatientName',
                 name: 'PatientName',
@@ -118,6 +114,12 @@ $(document).ready(function() {
                 data: 'EventDetails',
                 name: 'EventDetails',
                 orderable: false
+            },
+             {
+                data: 'CreatedOn',
+                name: 'CreatedOn',
+                orderable: true,
+                width: '160px'
             },
         ],
         order: [[0, 'desc']],

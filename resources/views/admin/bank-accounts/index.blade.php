@@ -37,6 +37,7 @@
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Account Number</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Branch</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">City</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">CreatedOn</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
@@ -48,7 +49,7 @@
 
 <!-- Bank Account Modal -->
 <div id="bankAccountModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeModal()"></div>
+    <div class="fixed inset-0 bg-opacity-30" onclick="closeModal()"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
             <!-- Modal Header -->
@@ -70,25 +71,25 @@
                     <h3 class="text-sm font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">Bank Accounts</h3>
                     <div class="space-y-4">
                         <div class="flex items-center gap-4">
-                            <label for="BankAccountName" class="w-32 text-sm font-medium text-gray-700 text-right">Bank Name:</label>
+                            <label for="BankAccountName" class="w-32 text-sm font-medium text-gray-700 text-right">Bank Name<sup class="star">*</sup></label>
                             <input type="text" id="BankAccountName" name="BankAccountName"
                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                    placeholder="Enter bank name" required>
                         </div>
                         <div class="flex items-center gap-4">
-                            <label for="AccountNumber" class="w-32 text-sm font-medium text-gray-700 text-right">Account Number:</label>
+                            <label for="AccountNumber" class="w-32 text-sm font-medium text-gray-700 text-right">Account Number<sup class="star">*</sup></label>
                             <input type="text" id="AccountNumber" name="AccountNumber"
                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                    placeholder="Enter account number">
                         </div>
                         <div class="flex items-center gap-4">
-                            <label for="Branch" class="w-32 text-sm font-medium text-gray-700 text-right">Branch:</label>
+                            <label for="Branch" class="w-32 text-sm font-medium text-gray-700 text-right">Branch<sup class="star">*</sup></label>
                             <input type="text" id="Branch" name="Branch"
                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                    placeholder="Enter branch">
                         </div>
                         <div class="flex items-center gap-4">
-                            <label for="City" class="w-32 text-sm font-medium text-gray-700 text-right">City:</label>
+                            <label for="City" class="w-32 text-sm font-medium text-gray-700 text-right">City<sup class="star">*</sup></label>
                             <input type="text" id="City" name="City"
                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                    placeholder="Enter city">
@@ -169,6 +170,14 @@ $(document).ready(function() {
                 }
             },
             {
+                data: 'CreatedOn',
+                name: 'CreatedOn',
+                orderable: true,
+                render: function(data) {
+                    return data || '-';
+                }
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
@@ -176,7 +185,7 @@ $(document).ready(function() {
                 className: 'text-right'
             },
         ],
-        order: [[1, 'asc']],
+        order: [[5, 'asc']],
         language: {
             processing: '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Processing...</span></div>',
             zeroRecords: 'No bank accounts found',
@@ -383,5 +392,36 @@ function bulkDeleteAccounts() {
         }
     });
 }
+
+$(document).ready(function() {
+    $("#bankAccountForm").validate({
+        ignore: [],
+        rules: {
+            BankAccountName: { required: true },
+            AccountNumber: { 
+                required: true,
+                number: true,
+                minlength: 8,
+                maxlength: 20
+            },
+            Branch: { required: true },
+            City: { required: true }
+        },
+        messages: {
+            BankAccountName: { required: "Please enter bank name" },
+            AccountNumber: { 
+                required: "Please enter account number",
+                number: "Account number must contain only numbers",
+                minlength: "Account number must be at least 8 digits",
+                maxlength: "Account number cannot exceed 20 digits"
+            },
+            Branch: { required: "Please enter branch" },
+            City: { required: "Please enter city" }
+        },
+        submitHandler: function(form) {
+            return false;
+        }
+    });
+});
 </script>
 @endsection

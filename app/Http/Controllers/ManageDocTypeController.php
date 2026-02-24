@@ -26,6 +26,9 @@ class ManageDocTypeController extends Controller
                         });
                     }
                 })
+                 ->editColumn('CreatedOn', function($doctor) {
+                    return $doctor->LastUpdatedOn ? $doctor->LastUpdatedOn->format('M d, Y h:i A') : 'N/A';
+                })
                 ->addColumn('action', function ($docType) {
                     return view('admin.doc-types.actions', compact('docType'))->render();
                 })

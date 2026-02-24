@@ -30,5 +30,10 @@ Add Column in table name is below:
 7. column name = Building in table name = Patient
 8. column name = Building_id in table name = Patient
 9. column name = VIP in table name = Patient
-9. column name = doctorincentive_percentage in table name = TreatmentTypeHierarchy
-9. column name = CabineNumber in table name = Provider
+10. column name = DoctorIncentiveAmount in table name = TreatmentTypeHierarchy
+11. column name = CabineNumber in table name = Provider
+12. column name = Approved in table name = User
+13. column name = Locked in table name = User
+14. column name = SecurityQuestion in table name = User
+15. column name = SecurityAnswer in table name = User
+16. column name = set null ClinicID in table name = cliniccommunicationconfig

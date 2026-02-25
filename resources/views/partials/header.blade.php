@@ -57,24 +57,45 @@
                 <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-500 rounded-full"></span>
             </button>
 
-            {{-- User avatar photo + name + chevron --}}
-            <div class="flex items-center gap-1.5 ml-1 cursor-pointer hover:bg-gray-100 rounded-lg px-1.5 md:px-2 py-1 transition-colors">
-                {{-- Profile picture (real image with initial fallback) --}}
-                <div class="relative w-6 h-6 md:w-7 md:h-7 flex-shrink-0">
-                    @if(auth()->user()->profile_photo_path ?? false)
-                        <img src="{{ auth()->user()->profile_photo_url }}"
-                             alt="{{ auth()->user()->name }}"
+            {{-- User avatar photo + name + chevron with dropdown --}}
+            <div class="relative group">
+                <div class="flex items-center gap-1.5 ml-1 cursor-pointer hover:bg-gray-100 rounded-lg px-1.5 md:px-2 py-1 transition-colors">
+                    {{-- Profile picture (real image with initial fallback) --}}
+                    <div class="relative w-6 h-6 md:w-7 md:h-7 flex-shrink-0">
+                        @if(auth()->user()->profile_photo_path ?? false)
+                            <img src="{{ auth()->user()->profile_photo_url }}"
+                                 alt="{{ auth()->user()->name }}"
+                                 class="w-6 h-6 md:w-7 md:h-7 rounded-full object-cover ring-2 ring-blue-400">
+                        @else
+                              <img src="{{asset('assets/images/Profile.png')}}"
+                             
                              class="w-6 h-6 md:w-7 md:h-7 rounded-full object-cover ring-2 ring-blue-400">
-                    @else
-                        <div class="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-semibold ring-2 ring-blue-300">
-                            {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
-                        </div>
-                    @endif
+                        @endif
+                    </div>
+                    <span class="text-xs md:text-sm font-medium text-gray-700 hidden sm:block">{{ auth()->user()->name ?? 'Sushil' }}</span>
+                    <svg class="w-3 h-3 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
                 </div>
-                <span class="text-xs md:text-sm font-medium text-gray-700 hidden sm:block">{{ auth()->user()->name ?? 'Sushil' }}</span>
-                <svg class="w-3 h-3 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
+                
+                <!-- Dropdown Menu -->
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div class="py-1">
+                    
+                        <!-- Menu Items -->
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-user mr-2 text-gray-400"></i> Profile
+                        </a>
+                        
+                        <!-- Logout -->
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
         </div>

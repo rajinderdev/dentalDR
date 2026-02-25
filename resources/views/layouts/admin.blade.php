@@ -38,7 +38,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="{{asset('assets/js/dataTables.responsive.min.js')}}"></script>
-        <script src="{{ asset('js/auth-check.js') }}"></script>
        @yield('js_files')
        @yield('page_js')
     </div>

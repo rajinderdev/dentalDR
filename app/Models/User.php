@@ -66,7 +66,8 @@ class User extends Authenticatable
 		'Approved',
 		'Locked',
 		'SecurityQuestion',
-		'SecurityAnswer'
+		'SecurityAnswer',
+		'ProfilePhoto'
 	];
 
 	/**

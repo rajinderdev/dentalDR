@@ -5,6 +5,7 @@ use App\Http\Controllers\TermsAndCondtionsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Api\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,11 +14,18 @@ Route::get('/', function () {
 Route::get('/terms-and-conditions', [TermsAndCondtionsController::class, 'index']);
 Route::get('/terms-and-conditions/data/{patientId}', [TermsAndCondtionsController::class, 'getData']);
 
+// API Routes for Authentication
+Route::prefix('api')->group(function () {
+    Route::post('/validate-session', [AuthController::class, 'validateSession']);
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
 // Digital Signature Routes
 Route::prefix('digital-signature')->group(function () {
     Route::post('/', [App\Http\Controllers\DigitalSignatureController::class, 'store']);
     Route::get('/patient/{patientId}', [App\Http\Controllers\DigitalSignatureController::class, 'getByPatient']);
 });
+
 // Guest routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -27,7 +35,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['admin'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     

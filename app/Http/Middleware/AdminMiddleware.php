@@ -14,10 +14,13 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-
+        
         if (! $user) {
-            abort(401);
+            // Check if user data exists in localStorage (handled via JavaScript)
+            // For now, redirect to external login if no authenticated user
+            return redirect('https://dental.stgserver.co.in/auth/login');
         }
+        
         $roleName = $user->RoleName ?? null;
 
         $isAdmin = false;
